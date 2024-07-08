@@ -1,7 +1,9 @@
 import express from 'express';
 import { LoggerService } from './logger/logger.service';
+import { ConfigService } from './config/config.service';
 
-const PORT = 5002;
+const configService = new ConfigService();
+const PORT = configService.get('PORT');
 
 const app = express();
 
