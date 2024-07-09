@@ -7,3 +7,8 @@ export class UserLoginDto {
 	@IsString({ message: 'Not valid password' })
 	password: string;
 }
+
+// export class UserLoginDto {
+// 	email: string;
+// 	password: string;
+// }

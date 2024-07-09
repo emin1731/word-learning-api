@@ -8,28 +8,61 @@ import { ConfigService } from './config/config.service';
 import { IConfigService } from './config/config.service.interface';
 import { App } from './app';
 import { SequelizeService } from './config/sequelize';
+import { IUsersController } from './controllers/user.controller.interface';
+import { IUsersService } from './services/user.service.interface';
+// import { UsersService } from './services/user.service';
+import { UserController } from './controllers/user.controller';
+import { ExeptionFilter } from './error/exeption.filter';
+import { IExeptionFilter } from './error/exeption.filter.interface';
+import { UserService } from './services/user.service';
 
-const configService = new ConfigService();
-const PORT = configService.get('PORT');
+// export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
+// 	bind<ILoggerService>(TYPES.ILogger).to(LoggerService).inSingletonScope();
+// 	bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
+// 	bind<IUsersController>(TYPES.IUsersController).to(UserController);
+// 	bind<IUsersService>(TYPES.IUsersService).to(UserService);
+// 	bind<App>(TYPES.Application).to(App);
+// 	// bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+// 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
+// 	// bind<IUsersRepository>(TYPES.UsersRepository).to(UsersRepository).inSingletonScope();
+// });
+
+// export interface IBootstrapReturn {
+// 	app: App;
+// 	appContainer: Container;
+// }
+
+// function bootstrap(): IBootstrapReturn {
+// 	const appContainer = new Container();
+// 	appContainer.load(appBindings);
+// 	const app = appContainer.get<App>(TYPES.Application);
+// 	app.init();
+// 	return { app, appContainer };
+// }
+
+// export const { app, appContainer } = bootstrap();
+
+export interface IBootstrapReturn {
+	appContainer: Container;
+	app: App;
+}
 
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<App>(TYPES.Application).to(App);
-	bind<ILoggerService>(TYPES.ILogger).to(LoggerService).inSingletonScope();
+	bind<ILoggerService>(TYPES.ILogger).to(LoggerService);
+	bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
+	bind<IUsersController>(TYPES.IUsersController).to(UserController);
+	bind<IUsersService>(TYPES.IUsersService).to(UserService);
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
-	bind<SequelizeService>(TYPES.SequelizeService).to(SequelizeService).inSingletonScope();
+	bind<SequelizeService>(TYPES.SequelizeService).to(SequelizeService);
 });
-
-export interface IBootstrapReturn {
-	app: App;
-	appContainer: Container;
-}
 
 function bootstrap(): IBootstrapReturn {
 	const appContainer = new Container();
 	appContainer.load(appBindings);
 	const app = appContainer.get<App>(TYPES.Application);
 	app.init();
-	return { app, appContainer };
+	return { appContainer, app };
 }
 
 export const { app, appContainer } = bootstrap();
