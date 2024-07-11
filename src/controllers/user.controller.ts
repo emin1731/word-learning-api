@@ -10,6 +10,7 @@ import { HTTPError } from '../error/http-error';
 import { IUsersService } from '../services/user.service.interface';
 import { IConfigService } from '../config/config.service.interface';
 import { sign } from 'jsonwebtoken';
+import { ValidateMiddleware } from '../middlewares/validate.middleware';
 
 @injectable()
 export class UserController extends BaseController implements IUsersController {
@@ -19,8 +20,18 @@ export class UserController extends BaseController implements IUsersController {
 	) {
 		super(loggerService);
 		this.bindRoutes([
-			{ path: '/register', method: 'post', function: this.register },
-			{ path: '/login', method: 'post', function: this.login },
+			{
+				path: '/register',
+				method: 'post',
+				function: this.register,
+				middleware: [new ValidateMiddleware(UserRegisterDto)],
+			},
+			{
+				path: '/login',
+				method: 'post',
+				function: this.login,
+				middleware: [new ValidateMiddleware(UserLoginDto)],
+			},
 		]);
 	}
 
