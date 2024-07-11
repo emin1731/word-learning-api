@@ -1,5 +1,3 @@
-import { Sequelize } from 'sequelize';
-
 export const TYPES = {
 	Application: Symbol.for('Application'),
 	ILogger: Symbol.for('ILogger'),
@@ -8,4 +6,5 @@ export const TYPES = {
 	SequelizeService: Symbol.for('SequelizeService'),
 	IUsersService: Symbol.for('IUsersService'),
 	ExeptionFilter: Symbol.for('ExeptionFilter'),
+	PrismaService: Symbol.for('PrismaService'),
 };

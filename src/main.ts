@@ -15,6 +15,7 @@ import { UserController } from './controllers/user.controller';
 import { ExeptionFilter } from './error/exeption.filter';
 import { IExeptionFilter } from './error/exeption.filter.interface';
 import { UserService } from './services/user.service';
+import { PrismaService } from './database/prisma.service';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -29,6 +30,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUsersService>(TYPES.IUsersService).to(UserService);
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
 	bind<SequelizeService>(TYPES.SequelizeService).to(SequelizeService);
+	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 });
 
 function bootstrap(): IBootstrapReturn {

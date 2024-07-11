@@ -8,46 +8,10 @@ import { SequelizeService } from './config/sequelize';
 import { Sequelize } from 'sequelize';
 import 'reflect-metadata';
 import { UserController } from './controllers/user.controller';
-
-// @injectable()
-// export class App {
-// 	app: Express;
-// 	port: string;
-// 	server: Server;
-
-// 	constructor(
-// 		@inject(TYPES.ILogger) private logger: ILoggerService,
-// 		@inject(TYPES.IConfigService) private configService: IConfigService,
-// 		@inject(TYPES.SequelizeService) private sequelizeService: SequelizeService,
-// 		@inject(TYPES.IUsersController) private userController: UserController,
-// 	) {
-// 		this.app = express();
-// 		this.port = configService.get('PORT');
-// 	}
-// 	useRoutes(): void {
-// 		this.app.use('/users', this.userController.router);
-// 	}
-
-// 	public async init(): Promise<void> {
-// 		this.useRoutes();
-// 		this.server = this.app.listen(this.port);
-
-// 		this.sequelizeService
-// 			.getInstance()
-// 			.authenticate()
-// 			.then(() => {
-// 				this.logger.log('Connection to the database has been established successfully.');
-// 			})
-// 			.catch((err: Error) => {
-// 				this.logger.error('Unable to connect to the database:', err);
-// 			});
-
-// 		this.logger.log(`Server is running on http://localhost:${this.port}`);
-// 	}
-// }
-
 import { json } from 'body-parser';
 import { ExeptionFilter } from './error/exeption.filter';
+import { PrismaService } from './database/prisma.service';
+
 @injectable()
 export class App {
 	app: Express;
@@ -58,10 +22,11 @@ export class App {
 		@inject(TYPES.ILogger) private logger: ILoggerService,
 		@inject(TYPES.IUsersController) private userController: UserController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
-		@inject(TYPES.SequelizeService) private sequelizeService: SequelizeService,
+		@inject(TYPES.IConfigService) private configService: IConfigService,
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
-		this.port = 8000;
+		this.port = +configService.get('PORT');
 	}
 
 	useMiddleware(): void {
@@ -79,8 +44,7 @@ export class App {
 	public async init(): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
-		this.sequelizeService.getInstance();
-
+		await this.prismaService.connect();
 		this.useExeptionFilters();
 		this.server = this.app.listen(this.port);
 		this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
