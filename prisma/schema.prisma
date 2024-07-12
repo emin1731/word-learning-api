@@ -20,6 +20,44 @@ model UserModel {
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
+  userProfile   Profile?
+  modules       Module[]
+}
+
+model Profile {
+  id        String    @id @unique @default(uuid())
+  userId    String    @unique
+  user      UserModel @relation(fields: [userId], references: [id])
+  name      String
+  surname   String
+  imageUrl  String
+  darkTheme Boolean   @default(false)
+  language  String    @default("english")
+}
+
+model Module {
+  id          String    @id @unique @default(uuid())
+  authorId    String    @unique
+  author      UserModel @relation(fields: [authorId], references: [id])
+  name        String
+  description String
+  progress    String
+  isPrivate   Boolean   @default(true)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  terms       Term[]
+}
+
+model Term {
+  id         String   @id @unique @default(uuid())
+  moduleId   String   @unique
+  model      Module   @relation(fields: [moduleId], references: [id])
+  term       String
+  definition String
+  isStarred  Boolean  @default(false)
+  imageUrl   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model RefreshToken {
