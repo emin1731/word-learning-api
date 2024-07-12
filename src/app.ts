@@ -4,8 +4,6 @@ import { ILoggerService } from './logger/logger.interface';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import { IConfigService } from './config/config.service.interface';
-import { SequelizeService } from './config/sequelize';
-import { Sequelize } from 'sequelize';
 import 'reflect-metadata';
 import { UserController } from './controllers/user.controller';
 import { json } from 'body-parser';
@@ -37,16 +35,16 @@ export class App {
 		this.app.use('/users', this.userController.router);
 	}
 
-	useExeptionFilters(): void {
+	useExceptionFilter(): void {
 		this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
 	}
 
 	public async init(): Promise<void> {
 		this.useMiddleware();
 		this.useRoutes();
+		this.useExceptionFilter();
 		await this.prismaService.connect();
-		this.useExeptionFilters();
 		this.server = this.app.listen(this.port);
-		this.logger.log(`Сервер запущен на http://localhost:${this.port}`);
+		this.logger.log(`Server is running on http://localhost:${this.port}`);
 	}
 }

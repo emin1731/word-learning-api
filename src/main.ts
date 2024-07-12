@@ -16,6 +16,8 @@ import { ExeptionFilter } from './error/exeption.filter';
 import { IExeptionFilter } from './error/exeption.filter.interface';
 import { UserService } from './services/user.service';
 import { PrismaService } from './database/prisma.service';
+import { IUsersRepository } from './repository/users.repository.interface';
+import { UsersRepository } from './repository/users.repository';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -31,6 +33,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
 	bind<SequelizeService>(TYPES.SequelizeService).to(SequelizeService);
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
+	bind<IUsersRepository>(TYPES.IUsersRepository).to(UsersRepository).inSingletonScope();
 });
 
 function bootstrap(): IBootstrapReturn {

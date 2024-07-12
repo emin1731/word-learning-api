@@ -32,11 +32,19 @@ export class UserController extends BaseController implements IUsersController {
 				function: this.login,
 				middleware: [new ValidateMiddleware(UserLoginDto)],
 			},
+			{
+				path: '/demo',
+				method: 'get',
+				function: this.demo,
+				// middleware: [new ValidateMiddleware(UserLoginDto)],
+			},
 		]);
+	}
+	demo(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
+		next(new HTTPError(401, 'auth error', 'login'));
 	}
 
 	login(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		console.log(req.body);
 		next(new HTTPError(401, 'auth error', 'login'));
 	}
 
@@ -49,6 +57,6 @@ export class UserController extends BaseController implements IUsersController {
 		if (!result) {
 			return next(new HTTPError(422, 'user already exists'));
 		}
-		this.ok(res, { email: result.email });
+		this.ok(res, { res: result.email });
 	}
 }
