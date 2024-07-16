@@ -17,7 +17,7 @@ export class UserService implements IUsersService {
 	async createUser({ email, name, password }: UserRegisterDto): Promise<UserModel | null> {
 		const newUser = new User(email, name);
 		await newUser.setPassword(password, +this.configService.get('SALT'));
-		const existedUser = await this.usersRepository.find(newUser.email);
+		const existedUser = await this.usersRepository.findByEmail(newUser.email);
 		if (existedUser) {
 			return null;
 		}
@@ -25,7 +25,7 @@ export class UserService implements IUsersService {
 	}
 
 	async validateUser({ email, password }: UserLoginDto): Promise<boolean> {
-		const existedUser = await this.usersRepository.find(email);
+		const existedUser = await this.usersRepository.findByEmail(email);
 		if (!existedUser) {
 			return false;
 		}

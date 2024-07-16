@@ -13,7 +13,16 @@ export class UsersRepository implements IUsersRepository {
 			data: { email, password, username: name },
 		});
 	}
-	find(email: string): Promise<UserModel | null> {
-		return this.prismaService.client.userModel.findFirst({ where: { email } });
+	findByEmail(email: string): Promise<UserModel | null> {
+		return this.prismaService.client.userModel.findUnique({ where: { email } });
 	}
+	findById(id: string): Promise<UserModel | null> {
+		return this.prismaService.client.userModel.findUnique({ where: { id } });
+	}
+	// createUserByEmailAndPassword(user: User) {
+	// 	user.password = bcrypt.hashSync(user.password, 12);
+	// 	return db.user.create({
+	// 		data: user,
+	// 	});
+	// }
 }
