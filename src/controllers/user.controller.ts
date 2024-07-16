@@ -53,7 +53,7 @@ export class UserController extends BaseController implements IUsersController {
 		if (!result) {
 			return next(new HTTPError(401, 'Authorization error', 'login'));
 		}
-		this.ok(res, {});
+		this.ok(res, { body });
 	}
 
 	async register(

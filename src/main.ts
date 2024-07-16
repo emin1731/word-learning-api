@@ -31,7 +31,6 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IUsersController>(TYPES.IUsersController).to(UserController);
 	bind<IUsersService>(TYPES.IUsersService).to(UserService);
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
-	bind<SequelizeService>(TYPES.SequelizeService).to(SequelizeService);
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 	bind<IUsersRepository>(TYPES.IUsersRepository).to(UsersRepository).inSingletonScope();
 });

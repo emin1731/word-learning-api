@@ -16,12 +16,23 @@ datasource db {
 model UserModel {
   id            String         @id @unique @default(uuid())
   email         String         @unique
+  username      String         @unique
   password      String
   refreshTokens RefreshToken[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   userProfile   Profile?
   modules       Module[]
+}
+
+model RefreshToken {
+  id          String    @id @unique @default(uuid())
+  hashedToken String
+  userId      String
+  User        UserModel @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 }
 
 model Profile {
@@ -58,14 +69,4 @@ model Term {
   imageUrl   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-}
-
-model RefreshToken {
-  id          String    @id @unique @default(uuid())
-  hashedToken String
-  userId      String
-  User        UserModel @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean   @default(false)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
 }
