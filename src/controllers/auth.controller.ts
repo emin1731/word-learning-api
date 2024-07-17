@@ -11,9 +11,10 @@ import { IUsersService } from '../services/user.service.interface';
 import { IConfigService } from '../config/config.service.interface';
 import { sign } from 'jsonwebtoken';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
+import { IAuthController } from './auth.controller.interface';
 
 @injectable()
-export class AuthController extends BaseController {
+export class AuthController extends BaseController implements IAuthController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILoggerService,
 		@inject(TYPES.IUsersService) private userService: IUsersService,
@@ -28,6 +29,8 @@ export class AuthController extends BaseController {
 			},
 		]);
 	}
+	login: (req: Request, res: Response, next: NextFunction) => void;
+	register: (req: Request, res: Response, next: NextFunction) => void;
 
 	async register1(
 		{ body }: Request<{}, {}, UserRegisterDto>,
