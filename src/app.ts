@@ -1,6 +1,6 @@
 import express, { Express } from 'express';
 import { Server } from 'http';
-import { ILoggerService } from './logger/logger.interface';
+import { ILoggerService } from './common/logger/logger.interface';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import { IConfigService } from './config/config.service.interface';

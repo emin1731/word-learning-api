@@ -2,8 +2,8 @@ import express from 'express';
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { TYPES } from './types';
 
-import { ILoggerService } from './logger/logger.interface';
-import { LoggerService } from './logger/logger.service';
+import { ILoggerService } from './common/logger/logger.interface';
+import { LoggerService } from './common/logger/logger.service';
 import { ConfigService } from './config/config.service';
 import { IConfigService } from './config/config.service.interface';
 import { App } from './app';

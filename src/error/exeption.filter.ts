@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { inject, injectable } from 'inversify';
-import { ILoggerService } from '../logger/logger.interface';
+import { ILoggerService } from '../common/logger/logger.interface';
 import { TYPES } from '../types';
 import 'reflect-metadata';
 import { IExeptionFilter } from './exeption.filter.interface';

@@ -1,7 +1,7 @@
 import { inject, injectable } from 'inversify';
 import { Sequelize } from 'sequelize';
 import { TYPES } from '../types';
-import { ILoggerService } from '../logger/logger.interface';
+import { ILoggerService } from '../common/logger/logger.interface';
 import { IConfigService } from './config.service.interface';
 
 @injectable()
