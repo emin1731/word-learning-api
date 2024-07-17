@@ -12,68 +12,53 @@ import { IConfigService } from '../config/config.service.interface';
 import { sign } from 'jsonwebtoken';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IAuthController } from './auth.controller.interface';
+import { IAuthService } from '../services/auth.service.interface';
 
 @injectable()
 export class AuthController extends BaseController implements IAuthController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILoggerService,
 		@inject(TYPES.IUsersService) private userService: IUsersService,
+		@inject(TYPES.IAuthService) private authService: IAuthService,
 	) {
 		super(loggerService);
 		this.bindRoutes([
 			{
 				path: '/register',
 				method: 'post',
-				function: this.register1,
+				function: this.register,
+				middleware: [new ValidateMiddleware(UserRegisterDto)],
+			},
+			{
+				path: '/login',
+				method: 'post',
+				function: this.register,
+				middleware: [new ValidateMiddleware(UserRegisterDto)],
+			},
+			{
+				path: '/refreshToken',
+				method: 'post',
+				function: this.register,
 				middleware: [new ValidateMiddleware(UserRegisterDto)],
 			},
 		]);
 	}
 	login: (req: Request, res: Response, next: NextFunction) => void;
-	register: (req: Request, res: Response, next: NextFunction) => void;
 
-	async register1(
+	async register(
 		{ body }: Request<{}, {}, UserRegisterDto>,
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		const result = await this.userService.createUser(body);
-		if (!result) {
+		const user = await this.userService.createUser({
+			name: body.name,
+			email: body.email,
+			password: body.password,
+		});
+		if (!user) {
 			return next(new HTTPError(422, 'user already exists'));
 		}
-		this.ok(res, { res: result.email });
+		const tokens = this.authService.addRefreshTokenToWhitelist(user);
+		this.ok(res, tokens);
 	}
-
-	// async register(
-	// 	req: Request<{}, {}, UserRegisterDto>,
-	// 	res: Response,
-	// 	next: NextFunction,
-	// ): Promise<void> {
-	// 	try {
-	// 		const { email, password } = req.body;
-	// 		if (!email || !password) {
-	// 			res.status(400);
-	// 			throw new Error('You must provide an email and a password.');
-	// 		}
-
-	// 		const existingUser = await findUserByEmail(email);
-
-	// 		if (existingUser) {
-	// 			res.status(400);
-	// 			throw new Error('Email already in use.');
-	// 		}
-
-	// 		const user = await createUserByEmailAndPassword({ email, password });
-	// 		const jti = uuidv4();
-	// 		const { accessToken, refreshToken } = generateTokens(user, jti);
-	// 		await addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
-
-	// 		res.json({
-	// 			accessToken,
-	// 			refreshToken,
-	// 		});
-	// 	} catch (err) {
-	// 		next(err);
-	// 	}
-	// }
 }

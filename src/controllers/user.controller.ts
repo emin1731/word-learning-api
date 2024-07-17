@@ -8,8 +8,6 @@ import { UserLoginDto } from '../dto/user.login.dto';
 import { UserRegisterDto } from '../dto/user.register.dto';
 import { HTTPError } from '../error/http-error';
 import { IUsersService } from '../services/user.service.interface';
-import { IConfigService } from '../config/config.service.interface';
-import { sign } from 'jsonwebtoken';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 
 @injectable()
@@ -33,17 +31,28 @@ export class UserController extends BaseController implements IUsersController {
 				middleware: [new ValidateMiddleware(UserLoginDto)],
 			},
 			{
-				path: '/demo',
+				path: '/profile',
 				method: 'get',
-				function: this.demo,
+				function: this.getProfile,
 				// middleware: [new ValidateMiddleware(UserLoginDto)],
 			},
 		]);
 	}
-	demo(req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void {
-		next(new HTTPError(401, 'auth error', 'login'));
-	}
 
+	async getProfile(
+		req: Request<{}, {}, UserLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		// try {
+		// 	const { userId } = req.body.;
+		// 	const user = await findUserById(userId);
+		// 	delete user.password;
+		// 	res.json(user);
+		// } catch (err) {
+		// 	next(err);
+		// }
+	}
 	async login(
 		{ body }: Request<{}, {}, UserLoginDto>,
 		res: Response,

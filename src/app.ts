@@ -1,14 +1,15 @@
+import 'reflect-metadata';
 import express, { Express } from 'express';
 import { Server } from 'http';
 import { ILoggerService } from './common/logger/logger.interface';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
 import { IConfigService } from './config/config.service.interface';
-import 'reflect-metadata';
 import { UserController } from './controllers/user.controller';
 import { json } from 'body-parser';
 import { ExeptionFilter } from './error/exeption.filter';
 import { PrismaService } from './database/prisma.service';
+import { AuthController } from './controllers/auth.controller';
 
 @injectable()
 export class App {
@@ -19,6 +20,7 @@ export class App {
 	constructor(
 		@inject(TYPES.ILogger) private logger: ILoggerService,
 		@inject(TYPES.IUsersController) private userController: UserController,
+		@inject(TYPES.IAuthController) private authController: AuthController,
 		@inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
 		@inject(TYPES.IConfigService) private configService: IConfigService,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
@@ -33,6 +35,7 @@ export class App {
 
 	useRoutes(): void {
 		this.app.use('/users', this.userController.router);
+		this.app.use('/auth', this.authController.router);
 	}
 
 	useExceptionFilter(): void {
