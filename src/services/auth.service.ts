@@ -15,10 +15,10 @@ export class AuthService implements IAuthService {
 		@inject(TYPES.IConfigService) private configService: IConfigService,
 	) {}
 
-	addRefreshTokenToWhitelist(user: UserModel): GenerateTokensReturn {
+	async addRefreshTokenToWhitelist(user: UserModel): Promise<GenerateTokensReturn> {
 		const jti = uuidv4();
-		const { accessToken, refreshToken } = this.jwtService.generateTokens(user, jti);
-		this.authRepository.addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
+		const { accessToken, refreshToken } = await this.jwtService.generateTokens(user, jti);
+		await this.authRepository.addRefreshTokenToWhitelist({ jti, refreshToken, userId: user.id });
 		return { accessToken, refreshToken };
 	}
 }

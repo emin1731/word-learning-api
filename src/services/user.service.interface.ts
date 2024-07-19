@@ -3,7 +3,7 @@ import { UserLoginDto } from '../dto/user.login.dto';
 import { UserRegisterDto } from '../dto/user.register.dto';
 
 export interface IUsersService {
-	createUser: ({ name, email, password }: UserRegisterDto) => Promise<UserModel | null>;
+	createUser: ({ username, email, password }: UserRegisterDto) => Promise<UserModel | null>;
 	validateUser: ({ email, password }: UserLoginDto) => Promise<boolean>;
-	getUserInfo: (email: string) => Promise<UserRegisterDto | null>;
+	getUserInfo: ({ email, password }: UserLoginDto) => Promise<UserModel | null>;
 }

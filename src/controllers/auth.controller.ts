@@ -32,8 +32,8 @@ export class AuthController extends BaseController implements IAuthController {
 			{
 				path: '/login',
 				method: 'post',
-				function: this.register,
-				middleware: [new ValidateMiddleware(UserRegisterDto)],
+				function: this.login,
+				middleware: [new ValidateMiddleware(UserLoginDto)],
 			},
 			{
 				path: '/refreshToken',
@@ -43,22 +43,35 @@ export class AuthController extends BaseController implements IAuthController {
 			},
 		]);
 	}
-	login: (req: Request, res: Response, next: NextFunction) => void;
 
 	async register(
 		{ body }: Request<{}, {}, UserRegisterDto>,
 		res: Response,
 		next: NextFunction,
 	): Promise<void> {
-		const user = await this.userService.createUser({
-			name: body.name,
-			email: body.email,
-			password: body.password,
-		});
+		const user = await this.userService.createUser(body);
 		if (!user) {
 			return next(new HTTPError(422, 'user already exists'));
 		}
 		const tokens = this.authService.addRefreshTokenToWhitelist(user);
+		this.ok(res, tokens);
+	}
+
+	async login(
+		{ body }: Request<{}, {}, UserLoginDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> {
+		const existingUser = await this.userService.getUserInfo({
+			email: body.email,
+			password: body.password,
+		});
+		if (!existingUser) {
+			this.loggerService.warn('Null detected');
+			return next(new HTTPError(401, 'Authorization error', 'login'));
+		}
+		const tokens = await this.authService.addRefreshTokenToWhitelist(existingUser);
+		this.loggerService.warn('Everying works ');
 		this.ok(res, tokens);
 	}
 }

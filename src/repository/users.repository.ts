@@ -13,10 +13,11 @@ export class UsersRepository implements IUsersRepository {
 			data: { email, password, username: name },
 		});
 	}
-	findByEmail(email: string): Promise<UserModel | null> {
-		return this.prismaService.client.userModel.findUnique({ where: { email } });
+	async findByEmail(email: string): Promise<UserModel | null> {
+		const res = await this.prismaService.client.userModel.findUnique({ where: { email } });
+		return res;
 	}
-	findById(id: string): Promise<UserModel | null> {
-		return this.prismaService.client.userModel.findUnique({ where: { id } });
+	async findById(id: string): Promise<UserModel | null> {
+		return await this.prismaService.client.userModel.findUnique({ where: { id } });
 	}
 }

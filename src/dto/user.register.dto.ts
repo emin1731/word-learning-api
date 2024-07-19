@@ -5,7 +5,7 @@ export class UserRegisterDto {
 	email: string;
 
 	@IsString({ message: 'Not valid name' })
-	name: string;
+	username: string;
 
 	@IsString({ message: 'Not valid password' })
 	password: string;
