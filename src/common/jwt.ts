@@ -24,7 +24,7 @@ export class JWTService {
 
 	// 8h can be changed to another value depending on the application logic.
 	// In case of '8h' the user will have to log in if there is no activity for 8 hours
-	generateRefreshToken(user: UserModel, jti: any): string {
+	generateRefreshToken(user: UserModel, jti: string): string {
 		return jwt.sign(
 			{
 				userId: user.id,
@@ -37,7 +37,7 @@ export class JWTService {
 		);
 	}
 
-	public generateTokens(user: UserModel, jti: any): any {
+	public generateTokens(user: UserModel, jti: string): GenerateTokensReturn {
 		const accessToken = this.generateAccessToken(user);
 		const refreshToken = this.generateRefreshToken(user, jti);
 

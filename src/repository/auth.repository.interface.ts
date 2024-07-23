@@ -1,5 +1,4 @@
-import { Prisma, RefreshToken, UserModel } from '@prisma/client';
-import { User } from '../models/user.entity';
+import { Prisma, RefreshToken } from '@prisma/client';
 import { AddRefreshTokenInput } from './auth.repository';
 
 export interface IAuthRepository {

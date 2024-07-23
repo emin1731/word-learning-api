@@ -5,10 +5,6 @@ import { RefreshToken, UserModel } from '@prisma/client';
 import { IAuthService } from './auth.service.interface';
 import { IAuthRepository } from '../repository/auth.repository.interface';
 import { GenerateTokensReturn, JWTService } from '../common/jwt';
-import { v4 as uuidv4 } from 'uuid';
-import { JwtPayload, verify } from 'jsonwebtoken';
-import { HTTPError } from '../error/http-error';
-import { IUsersService } from './user.service.interface';
 import { IUsersRepository } from '../repository/users.repository.interface';
 
 @injectable()

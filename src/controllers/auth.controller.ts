@@ -3,18 +3,13 @@ import { ILoggerService } from '../common/logger/logger.interface';
 import { TYPES } from '../types';
 import { BaseController } from './base.controller';
 import { Request, Response, NextFunction } from 'express';
-import { IUsersController } from './user.controller.interface';
 import { UserLoginDto } from '../dto/user.login.dto';
 import { UserRegisterDto } from '../dto/user.register.dto';
 import { HTTPError } from '../error/http-error';
 import { IUsersService } from '../services/user.service.interface';
-import { IConfigService } from '../config/config.service.interface';
-import { sign } from 'jsonwebtoken';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IAuthController } from './auth.controller.interface';
 import { IAuthService } from '../services/auth.service.interface';
-import { RefreshTokenDto } from '../dto/refresh-token';
-import crypto from 'crypto';
 @injectable()
 export class AuthController extends BaseController implements IAuthController {
 	constructor(

@@ -1,8 +1,7 @@
-import { RefreshToken, UserModel } from '@prisma/client';
+import { RefreshToken } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { PrismaService } from '../database/prisma.service';
 import { TYPES } from '../types';
-import crypto from 'crypto';
 import { Prisma } from '@prisma/client';
 import { JWTService } from '../common/jwt';
 
