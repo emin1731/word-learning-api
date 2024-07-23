@@ -1,8 +1,10 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
 import { IConfigService } from '../config/config.service.interface';
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 import { UserModel } from '@prisma/client';
+import crypto from 'crypto';
 
 export interface GenerateTokensReturn {
 	accessToken: string;
@@ -43,5 +45,14 @@ export class JWTService {
 			accessToken,
 			refreshToken,
 		};
+	}
+	verify(token: string, secret: string): JwtPayload | string {
+		return jwt.verify(token, secret);
+	}
+	hashToken(token: string): string {
+		return crypto.createHash('sha512').update(token).digest('hex');
+	}
+	generateJti(): string {
+		return uuidv4();
 	}
 }
