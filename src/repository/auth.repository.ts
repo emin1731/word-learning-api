@@ -4,6 +4,7 @@ import { PrismaService } from '../database/prisma.service';
 import { TYPES } from '../types';
 import crypto from 'crypto';
 import { Prisma } from '@prisma/client';
+import { JWTService } from '../common/jwt';
 
 export interface AddRefreshTokenInput {
 	jti: string;
@@ -13,7 +14,10 @@ export interface AddRefreshTokenInput {
 
 @injectable()
 export class AuthRepository {
-	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
+	constructor(
+		@inject(TYPES.PrismaService) private prismaService: PrismaService,
+		@inject(TYPES.JWTService) private jwtService: JWTService,
+	) {}
 
 	// used when we create a refresh token.
 	async addRefreshTokenToWhitelist({
@@ -24,7 +28,7 @@ export class AuthRepository {
 		return this.prismaService.client.refreshToken.create({
 			data: {
 				id: jti,
-				hashedToken: crypto.createHash('sha512').update(refreshToken).digest('hex'),
+				hashedToken: this.jwtService.hashToken(refreshToken),
 				userId,
 			},
 		});

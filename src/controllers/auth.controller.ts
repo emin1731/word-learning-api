@@ -13,7 +13,8 @@ import { sign } from 'jsonwebtoken';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IAuthController } from './auth.controller.interface';
 import { IAuthService } from '../services/auth.service.interface';
-
+import { RefreshTokenDto } from '../dto/refresh-token';
+import crypto from 'crypto';
 @injectable()
 export class AuthController extends BaseController implements IAuthController {
 	constructor(
@@ -73,5 +74,20 @@ export class AuthController extends BaseController implements IAuthController {
 		const tokens = await this.authService.addRefreshTokenToWhitelist(existingUser);
 		this.loggerService.warn('Everying works ');
 		this.ok(res, tokens);
+	}
+
+	async refreshToken(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { refreshToken } = req.body;
+			if (!refreshToken) {
+				res.status(400);
+				throw new Error('Missing refresh token.');
+			}
+
+			const newTokens = await this.authService.refreshTokens(refreshToken);
+			res.json(newTokens);
+		} catch (err) {
+			next(err);
+		}
 	}
 }
