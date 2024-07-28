@@ -12,5 +12,5 @@ export interface IAuthRepository {
 
 	deleteRefreshToken(id: string): Promise<RefreshToken>;
 
-	revokeTokens(userId: string): Promise<Prisma.BatchPayload>;
+	updateRefreshTokens(userId: string): Promise<Prisma.BatchPayload>;
 }

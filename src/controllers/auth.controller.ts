@@ -10,6 +10,8 @@ import { IUsersService } from '../services/user.service.interface';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IAuthController } from './auth.controller.interface';
 import { IAuthService } from '../services/auth.service.interface';
+import { RefreshTokenDto } from '../dto/refresh-token';
+
 @injectable()
 export class AuthController extends BaseController implements IAuthController {
 	constructor(
@@ -34,8 +36,13 @@ export class AuthController extends BaseController implements IAuthController {
 			{
 				path: '/refreshToken',
 				method: 'post',
-				function: this.register,
-				middleware: [new ValidateMiddleware(UserRegisterDto)],
+				function: this.refreshToken,
+				middleware: [new ValidateMiddleware(RefreshTokenDto)],
+			},
+			{
+				path: '/revokeRefreshTokens',
+				method: 'post',
+				function: this.revokeRefreshTokens,
 			},
 		]);
 	}
@@ -80,7 +87,18 @@ export class AuthController extends BaseController implements IAuthController {
 			}
 
 			const newTokens = await this.authService.refreshTokens(refreshToken);
-			res.json(newTokens);
+			this.ok(res, newTokens);
+		} catch (err) {
+			next(err);
+			console.log('ERROR', err);
+		}
+	}
+
+	async revokeRefreshTokens({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { userId } = body;
+			await this.authService.revokeTokens(userId);
+			this.ok(res, { message: `Tokens revoked for user with id #${userId}` });
 		} catch (err) {
 			next(err);
 		}

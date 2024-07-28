@@ -54,7 +54,7 @@ export class AuthRepository {
 		});
 	}
 
-	async revokeTokens(userId: string): Promise<Prisma.BatchPayload> {
+	async updateRefreshTokens(userId: string): Promise<Prisma.BatchPayload> {
 		return this.prismaService.client.refreshToken.updateMany({
 			where: {
 				userId,

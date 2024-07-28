@@ -81,4 +81,8 @@ export class AuthService implements IAuthService {
 
 		return { accessToken, refreshToken: newRefreshToken };
 	}
+
+	async revokeTokens(userId: string): Promise<void> {
+		this.authRepository.updateRefreshTokens(userId);
+	}
 }

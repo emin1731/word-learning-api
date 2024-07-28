@@ -9,12 +9,14 @@ import { UserRegisterDto } from '../dto/user.register.dto';
 import { HTTPError } from '../error/http-error';
 import { IUsersService } from '../services/user.service.interface';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
+import { IConfigService } from '../config/config.service.interface';
 
 @injectable()
 export class UserController extends BaseController implements IUsersController {
 	constructor(
 		@inject(TYPES.ILogger) private loggerService: ILoggerService,
 		@inject(TYPES.IUsersService) private userService: IUsersService,
+		@inject(TYPES.IConfigService) private configService: IConfigService,
 	) {
 		super(loggerService);
 		this.bindRoutes([
@@ -34,25 +36,21 @@ export class UserController extends BaseController implements IUsersController {
 				path: '/profile',
 				method: 'get',
 				function: this.getProfile,
-				// middleware: [new ValidateMiddleware(UserLoginDto)],
 			},
 		]);
 	}
 
-	async getProfile(
-		req: Request<{}, {}, UserLoginDto>,
-		res: Response,
-		next: NextFunction,
-	): Promise<void> {
-		// try {
-		// 	const { userId } = req.body.;
-		// 	const user = await findUserById(userId);
-		// 	delete user.password;
-		// 	res.json(user);
-		// } catch (err) {
-		// 	next(err);
-		// }
+	async getProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			// const user = await this.userService.getUserInfo(req.body);
+			this.ok(res, { res: req.body.payload });
+		} catch (err) {
+			if (err instanceof Error) {
+				next(new HTTPError(422, 'Error while getting user info', err.message));
+			}
+		}
 	}
+
 	async login(
 		{ body }: Request<{}, {}, UserLoginDto>,
 		res: Response,

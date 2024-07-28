@@ -10,6 +10,7 @@ import { json } from 'body-parser';
 import { ExeptionFilter } from './error/exeption.filter';
 import { PrismaService } from './database/prisma.service';
 import { AuthController } from './controllers/auth.controller';
+import { AuthMiddleware } from './middlewares/auth.middleware';
 
 @injectable()
 export class App {
@@ -31,6 +32,8 @@ export class App {
 
 	useMiddleware(): void {
 		this.app.use(json());
+		const authMiddleware = new AuthMiddleware(this.configService, this.logger);
+		this.app.use(authMiddleware.execute.bind(authMiddleware));
 	}
 
 	useRoutes(): void {
