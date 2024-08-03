@@ -1,11 +1,11 @@
 import { inject, injectable } from 'inversify';
-import { IConfigService } from '../config/config.service.interface';
+import { IConfigService } from '../interfaces/config/config.service.interface';
 import { TYPES } from '../types';
 import { RefreshToken, UserModel } from '@prisma/client';
-import { IAuthService } from './auth.service.interface';
-import { IAuthRepository } from '../repository/auth.repository.interface';
+import { IAuthService } from '../interfaces/services/auth.service.interface';
+import { IAuthRepository } from '../interfaces/repositories/auth.repository.interface';
 import { GenerateTokensReturn, JWTService } from '../common/jwt';
-import { IUsersRepository } from '../repository/users.repository.interface';
+import { IUsersRepository } from '../interfaces/repositories/users.repository.interface';
 
 @injectable()
 export class AuthService implements IAuthService {

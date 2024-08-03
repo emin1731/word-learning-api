@@ -1,6 +1,6 @@
 import { injectable } from 'inversify';
-import { LoggerService } from '../common/logger/logger.service';
-import { IConfigService } from './config.service.interface';
+import { LoggerService } from '../common/logger.service';
+import { IConfigService } from '../interfaces/config/config.service.interface';
 import { DotenvConfigOutput, DotenvParseOutput, config } from 'dotenv';
 
 @injectable()

@@ -1,11 +1,11 @@
-import { IMiddleware } from '../common/middleware.interface';
+import { IMiddleware } from '../interfaces/common/middleware.interface';
 import { Request, Response, NextFunction } from 'express';
 import { JwtPayload, verify } from 'jsonwebtoken';
 import { inject } from 'inversify';
 import { TYPES } from '../types';
-import { IConfigService } from '../config/config.service.interface';
-import { ILoggerService } from '../common/logger/logger.interface';
-import { ExpressReturnType } from '../common/routes.interface';
+import { IConfigService } from '../interfaces/config/config.service.interface';
+import { ILoggerService } from '../interfaces/common/logger.interface';
+import { ExpressReturnType } from '../interfaces/common/routes.interface';
 
 export class AuthMiddleware implements IMiddleware {
 	constructor(

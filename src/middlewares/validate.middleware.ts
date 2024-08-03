@@ -1,5 +1,5 @@
 import { ClassConstructor, plainToClass } from 'class-transformer';
-import { IMiddleware } from '../common/middleware.interface';
+import { IMiddleware } from '../interfaces/common/middleware.interface';
 import { Request, Response, NextFunction } from 'express';
 import { validate } from 'class-validator';
 

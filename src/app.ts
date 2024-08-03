@@ -1,10 +1,10 @@
 import 'reflect-metadata';
 import express, { Express } from 'express';
 import { Server } from 'http';
-import { ILoggerService } from './common/logger/logger.interface';
+import { ILoggerService } from './interfaces/common/logger.interface';
 import { inject, injectable } from 'inversify';
 import { TYPES } from './types';
-import { IConfigService } from './config/config.service.interface';
+import { IConfigService } from './interfaces/config/config.service.interface';
 import { UserController } from './controllers/user.controller';
 import { json } from 'body-parser';
 import { ExeptionFilter } from './error/exeption.filter';

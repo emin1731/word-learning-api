@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../types';
-import { IConfigService } from '../config/config.service.interface';
+import { IConfigService } from '../interfaces/config/config.service.interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { v4 as uuidv4 } from 'uuid';
 import { UserModel } from '@prisma/client';

@@ -1,5 +1,5 @@
 import { Logger, ILogObj } from 'tslog';
-import { ILoggerService } from './logger.interface';
+import { ILoggerService } from '../interfaces/common/logger.interface';
 import { injectable } from 'inversify';
 import 'reflect-metadata';
 

@@ -1,15 +1,15 @@
 import { inject, injectable } from 'inversify';
-import { ILoggerService } from '../common/logger/logger.interface';
+import { ILoggerService } from '../interfaces/common/logger.interface';
 import { TYPES } from '../types';
 import { BaseController } from './base.controller';
 import { Request, Response, NextFunction } from 'express';
 import { UserLoginDto } from '../dto/user.login.dto';
 import { UserRegisterDto } from '../dto/user.register.dto';
 import { HTTPError } from '../error/http-error';
-import { IUsersService } from '../services/user.service.interface';
+import { IUsersService } from '../interfaces/services/user.service.interface';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
-import { IAuthController } from './auth.controller.interface';
-import { IAuthService } from '../services/auth.service.interface';
+import { IAuthController } from '../interfaces/controllers/auth.controller.interface';
+import { IAuthService } from '../interfaces/services/auth.service.interface';
 import { RefreshTokenDto } from '../dto/refresh-token';
 
 @injectable()

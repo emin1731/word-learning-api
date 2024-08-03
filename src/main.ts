@@ -1,26 +1,26 @@
 import { Container, ContainerModule, interfaces } from 'inversify';
 import { TYPES } from './types';
 
-import { ILoggerService } from './common/logger/logger.interface';
-import { LoggerService } from './common/logger/logger.service';
+import { ILoggerService } from './interfaces/common/logger.interface';
+import { LoggerService } from './common/logger.service';
 import { ConfigService } from './config/config.service';
-import { IConfigService } from './config/config.service.interface';
+import { IConfigService } from './interfaces/config/config.service.interface';
 import { App } from './app';
-import { IUsersController } from './controllers/user.controller.interface';
-import { IUsersService } from './services/user.service.interface';
+import { IUsersController } from './interfaces/controllers/user.controller.interface';
+import { IUsersService } from './interfaces/services/user.service.interface';
 import { UserController } from './controllers/user.controller';
 import { ExeptionFilter } from './error/exeption.filter';
-import { IExeptionFilter } from './error/exeption.filter.interface';
+import { IExeptionFilter } from './interfaces/error/exeption.filter.interface';
 import { UserService } from './services/user.service';
 import { PrismaService } from './database/prisma.service';
-import { IUsersRepository } from './repository/users.repository.interface';
+import { IUsersRepository } from './interfaces/repositories/users.repository.interface';
 import { UsersRepository } from './repository/users.repository';
-import { IAuthController } from './controllers/auth.controller.interface';
+import { IAuthController } from './interfaces/controllers/auth.controller.interface';
 import { AuthRepository } from './repository/auth.repository';
 import { AuthController } from './controllers/auth.controller';
-import { IAuthService } from './services/auth.service.interface';
+import { IAuthService } from './interfaces/services/auth.service.interface';
 import { AuthService } from './services/auth.service';
-import { IAuthRepository } from './repository/auth.repository.interface';
+import { IAuthRepository } from './interfaces/repositories/auth.repository.interface';
 import { JWTService } from './common/jwt';
 
 export interface IBootstrapReturn {
