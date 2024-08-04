@@ -42,8 +42,8 @@ export class UserController extends BaseController implements IUsersController {
 
 	async getProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
 		try {
-			// const user = await this.userService.getUserInfo(req.body);
-			this.ok(res, { res: req.body.payload });
+			const user = await this.userService.getUserInfoById(req.body.payload.userId);
+			this.ok(res, { res: user });
 		} catch (err) {
 			if (err instanceof Error) {
 				next(new HTTPError(422, 'Error while getting user info', err.message));

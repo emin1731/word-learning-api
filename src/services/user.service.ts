@@ -48,4 +48,11 @@ export class UserService implements IUsersService {
 		}
 		return existedUser;
 	}
+	async getUserInfoById(id: string): Promise<UserModel | null> {
+		const existedUser = await this.usersRepository.findById(id);
+		if (!existedUser) {
+			return null;
+		}
+		return existedUser;
+	}
 }
