@@ -13,6 +13,7 @@ datasource db {
   url      = "file:./dev.db"
 }
 
+
 model UserModel {
   id            String         @id @unique @default(uuid())
   email         String         @unique
@@ -52,7 +53,7 @@ model Module {
   author      UserModel @relation(fields: [authorId], references: [id])
   name        String
   description String
-  progress    String
+  progress    Float     @default(0) 
   isPrivate   Boolean   @default(true)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
@@ -65,6 +66,7 @@ model Term {
   model      Module   @relation(fields: [moduleId], references: [id])
   term       String
   definition String
+  status     String   @default("NOT_STARTED")
   isStarred  Boolean  @default(false)
   imageUrl   String
   createdAt  DateTime @default(now())
