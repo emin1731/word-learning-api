@@ -22,6 +22,10 @@ import { IAuthService } from './interfaces/services/auth.service.interface';
 import { AuthService } from './services/auth.service';
 import { IAuthRepository } from './interfaces/repositories/auth.repository.interface';
 import { JWTService } from './common/jwt';
+import { IModuleService } from './interfaces/services/module.service.interface';
+import { ModuleService } from './services/module.service';
+import { IModulesRepository } from './interfaces/repositories/modules.repository.interface';
+import { ModulesRepository } from './repository/modules.repository';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -43,6 +47,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IAuthService>(TYPES.IAuthService).to(AuthService);
 	bind<IAuthRepository>(TYPES.IAuthRepository).to(AuthRepository);
 	bind<JWTService>(TYPES.JWTService).to(JWTService);
+
+	bind<IModulesRepository>(TYPES.IModulesRepository).to(ModulesRepository);
+	bind<IModuleService>(TYPES.IModuleService).to(ModuleService);
 });
 
 function bootstrap(): IBootstrapReturn {

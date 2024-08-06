@@ -1,4 +1,4 @@
-import { Module as ModuleModel } from '@prisma/client';
+import { ModuleModel } from '@prisma/client';
 import { IModulesRepository } from '../interfaces/repositories/modules.repository.interface';
 import { inject, injectable } from 'inversify';
 import { PrismaService } from '../database/prisma.service';
@@ -10,19 +10,29 @@ export class ModulesRepository implements IModulesRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
 	async createModule(userId: string, { name, description }: Module): Promise<ModuleModel> {
-		return await this.prismaService.client.module.create({
+		return await this.prismaService.client.moduleModel.create({
 			data: { authorId: userId, name, description },
 		});
 	}
 
 	async getModulesByUser(userId: string): Promise<ModuleModel[]> {
-		return await this.prismaService.client.module.findMany({
+		return await this.prismaService.client.moduleModel.findMany({
 			where: { authorId: userId },
+		});
+	}
+	async getModuleByName(name: string): Promise<ModuleModel[] | null> {
+		return await this.prismaService.client.moduleModel.findMany({
+			where: { name },
+		});
+	}
+	async getModuleById(userId: string, moduleId: string): Promise<ModuleModel | null> {
+		return await this.prismaService.client.moduleModel.findFirst({
+			where: { id: moduleId, authorId: userId },
 		});
 	}
 
 	async deleteModule(userId: string, moduleId: string): Promise<void> {
-		await this.prismaService.client.module.deleteMany({
+		await this.prismaService.client.moduleModel.deleteMany({
 			where: {
 				id: moduleId,
 				authorId: userId,
@@ -34,7 +44,7 @@ export class ModulesRepository implements IModulesRepository {
 		moduleId: string,
 		moduleData: Partial<ModuleModel>,
 	): Promise<ModuleModel> {
-		return await this.prismaService.client.module.update({
+		return await this.prismaService.client.moduleModel.update({
 			where: {
 				id: moduleId,
 				authorId: userId,
