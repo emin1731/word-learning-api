@@ -49,7 +49,7 @@ model ProfileModel {
 
 model ModuleModel {
   id          String    @id @unique @default(uuid())
-  authorId    String    @unique
+  authorId    String    
   author      UserModel @relation(fields: [authorId], references: [id])
   name        String
   description String
@@ -62,7 +62,7 @@ model ModuleModel {
 
 model TermModel {
   id         String   @id @unique @default(uuid())
-  moduleId   String   @unique
+  moduleId   String   
   model      ModuleModel   @relation(fields: [moduleId], references: [id])
   term       String
   definition String

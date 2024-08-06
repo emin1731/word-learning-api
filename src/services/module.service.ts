@@ -21,7 +21,7 @@ export class ModuleService implements IModuleService {
 		const newModule = new Module(name, description, isPrivate);
 
 		const existedModule = await this.moduleRepository.getModuleByName(authorId, newModule.name);
-		if (existedModule) {
+		if (existedModule?.length !== 0) {
 			return null;
 		}
 
@@ -45,6 +45,9 @@ export class ModuleService implements IModuleService {
 	}
 	async getModules(authorId: string): Promise<ModuleModel[] | null> {
 		return await this.moduleRepository.getModulesByUser(authorId);
+	}
+	async getModuleById(authorId: string, moduleId: string): Promise<ModuleModel | null> {
+		return await this.moduleRepository.getModuleById(authorId, moduleId);
 	}
 
 	async deleteModule(authorId: string, moduleId: string): Promise<void> {

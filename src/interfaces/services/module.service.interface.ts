@@ -13,4 +13,5 @@ export interface IModuleService {
 	) => Promise<ModuleModel | null>;
 	deleteModule: (authorId: string, moduleId: string) => Promise<void>;
 	getModules: (authorId: string) => Promise<ModuleModel[] | null>;
+	getModuleById: (authorId: string, moduleId: string) => Promise<ModuleModel | null>;
 }

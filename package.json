@@ -8,8 +8,8 @@
 		"start": "node dist/main.js",
 		"build": "tsc",
 		"dev": "nodemon",
-		"migrate": "prisma migrate dev --name",
-		"generate": "prisma generate",
+		"prisma:migrate": "prisma migrate dev --name",
+		"prisma:generate": "prisma generate",
 		"prisma:update": "npm run migrate && npm run generate",
 		"lint": "eslint ./src/**",
 		"lint:fix": "eslint ./src/** --fix"

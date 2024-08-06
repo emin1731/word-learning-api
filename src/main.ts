@@ -26,6 +26,8 @@ import { IModuleService } from './interfaces/services/module.service.interface';
 import { ModuleService } from './services/module.service';
 import { IModulesRepository } from './interfaces/repositories/modules.repository.interface';
 import { ModulesRepository } from './repository/modules.repository';
+import { IModuleController } from './interfaces/controllers/module.controller.interface';
+import { ModuleController } from './controllers/module.controller';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -50,6 +52,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 
 	bind<IModulesRepository>(TYPES.IModulesRepository).to(ModulesRepository);
 	bind<IModuleService>(TYPES.IModuleService).to(ModuleService);
+	bind<IModuleController>(TYPES.IModuleController).to(ModuleController);
 });
 
 function bootstrap(): IBootstrapReturn {

@@ -18,7 +18,7 @@ export class JWTService {
 	// '5m' can usually vary between 5 and 15
 	generateAccessToken(user: UserModel): string {
 		return jwt.sign({ userId: user.id }, this.configService.get('JWT_ACCESS_SECRET'), {
-			expiresIn: '5m',
+			expiresIn: '15m',
 		});
 	}
 
