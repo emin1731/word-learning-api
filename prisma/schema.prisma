@@ -66,9 +66,9 @@ model TermModel {
   model      ModuleModel   @relation(fields: [moduleId], references: [id])
   term       String
   definition String
-  status     String   @default("NOT_STARTED")
+  status     String   @default("NOT_STARTED") // 'NOT_STARTED' | 'IN_PROGRESS' | 'COMPLETED'
   isStarred  Boolean  @default(false)
-  imageUrl   String
+  imageUrl   String?
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 }
