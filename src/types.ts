@@ -12,6 +12,6 @@ export const TYPES = {
 	IAuthRepository: Symbol.for('IAuthRepository'),
 	JWTService: Symbol.for('JWTService'),
 	IModuleService: Symbol.for('IModuleService'),
-	IModulesRepository: Symbol.for('IModulesRepository'),
+	IModuleRepository: Symbol.for('IModuleRepository'),
 	IModuleController: Symbol.for('IModuleController'),
 };

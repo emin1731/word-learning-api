@@ -5,12 +5,12 @@ import { IModuleService } from '../interfaces/services/module.service.interface'
 import { ModuleDto } from '../dto/module.dto';
 import { Module } from '../models/module.entitry';
 import { ModuleModel } from '@prisma/client';
-import { IModulesRepository } from '../interfaces/repositories/modules.repository.interface';
+import { IModuleRepository } from '../interfaces/repositories/module.repository.interface';
 
 @injectable()
 export class ModuleService implements IModuleService {
 	constructor(
-		@inject(TYPES.IModulesRepository) private moduleRepository: IModulesRepository,
+		@inject(TYPES.IModuleRepository) private moduleRepository: IModuleRepository,
 		@inject(TYPES.IConfigService) private configService: IConfigService,
 	) {}
 

@@ -24,8 +24,8 @@ import { IAuthRepository } from './interfaces/repositories/auth.repository.inter
 import { JWTService } from './common/jwt';
 import { IModuleService } from './interfaces/services/module.service.interface';
 import { ModuleService } from './services/module.service';
-import { IModulesRepository } from './interfaces/repositories/modules.repository.interface';
-import { ModulesRepository } from './repository/modules.repository';
+import { IModuleRepository } from './interfaces/repositories/module.repository.interface';
+import { ModuleRepository } from './repository/module.repository';
 import { IModuleController } from './interfaces/controllers/module.controller.interface';
 import { ModuleController } from './controllers/module.controller';
 
@@ -50,7 +50,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IAuthRepository>(TYPES.IAuthRepository).to(AuthRepository);
 	bind<JWTService>(TYPES.JWTService).to(JWTService);
 
-	bind<IModulesRepository>(TYPES.IModulesRepository).to(ModulesRepository);
+	bind<IModuleRepository>(TYPES.IModuleRepository).to(ModuleRepository);
 	bind<IModuleService>(TYPES.IModuleService).to(ModuleService);
 	bind<IModuleController>(TYPES.IModuleController).to(ModuleController);
 });

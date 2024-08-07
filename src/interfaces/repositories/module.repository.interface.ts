@@ -1,7 +1,7 @@
 import { ModuleModel } from '@prisma/client';
 import { Module } from '../../models/module.entitry';
 
-export interface IModulesRepository {
+export interface IModuleRepository {
 	createModule: (userId: string, module: Module) => Promise<ModuleModel>;
 	getModulesByUser: (userId: string) => Promise<ModuleModel[]>;
 	getModuleByName: (userId: string, name: string) => Promise<ModuleModel[] | null>;

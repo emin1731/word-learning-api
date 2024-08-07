@@ -1,12 +1,12 @@
 import { ModuleModel } from '@prisma/client';
-import { IModulesRepository } from '../interfaces/repositories/modules.repository.interface';
+import { IModuleRepository } from '../interfaces/repositories/module.repository.interface';
 import { inject, injectable } from 'inversify';
 import { PrismaService } from '../database/prisma.service';
 import { TYPES } from '../types';
 import { Module } from '../models/module.entitry';
 
 @injectable()
-export class ModulesRepository implements IModulesRepository {
+export class ModuleRepository implements IModuleRepository {
 	constructor(@inject(TYPES.PrismaService) private prismaService: PrismaService) {}
 
 	async createModule(userId: string, { name, description }: Module): Promise<ModuleModel> {
