@@ -28,6 +28,10 @@ import { IModuleRepository } from './interfaces/repositories/module.repository.i
 import { ModuleRepository } from './repository/module.repository';
 import { IModuleController } from './interfaces/controllers/module.controller.interface';
 import { ModuleController } from './controllers/module.controller';
+import { ITermRepository } from './interfaces/repositories/term.repository.interface';
+import { TermRepository } from './repository/term.repository';
+import { ITermService } from './interfaces/services/term.service.interface';
+import { TermService } from './services/term.service';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -53,6 +57,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<IModuleRepository>(TYPES.IModuleRepository).to(ModuleRepository);
 	bind<IModuleService>(TYPES.IModuleService).to(ModuleService);
 	bind<IModuleController>(TYPES.IModuleController).to(ModuleController);
+
+	bind<ITermRepository>(TYPES.ITermRepository).to(TermRepository);
+	bind<ITermService>(TYPES.ITermService).to(TermService);
 });
 
 function bootstrap(): IBootstrapReturn {
