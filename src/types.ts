@@ -1,7 +1,7 @@
 export const TYPES = {
 	Application: Symbol.for('Application'),
 	PrismaService: Symbol.for('PrismaService'),
-	ExeptionFilter: Symbol.for('ExeptionFilter'),
+	IExceptionFilter: Symbol.for('IExceptionFilter'),
 	ILogger: Symbol.for('ILogger'),
 	IConfigService: Symbol.for('IConfigService'),
 	IUsersController: Symbol.for('IUsersController'),

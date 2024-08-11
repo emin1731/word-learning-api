@@ -7,7 +7,7 @@ import { TYPES } from './types';
 import { IConfigService } from './interfaces/config/config.service.interface';
 import { UserController } from './controllers/user.controller';
 import { json } from 'body-parser';
-import { ExeptionFilter } from './error/exeption.filter';
+import { ExceptionFilter } from './error/exception.filter';
 import { PrismaService } from './database/prisma.service';
 import { AuthController } from './controllers/auth.controller';
 import { AuthMiddleware } from './middlewares/auth.middleware';
@@ -26,7 +26,7 @@ export class App {
 		@inject(TYPES.IAuthController) private authController: AuthController,
 		@inject(TYPES.IModuleController) private moduleController: ModuleController,
 		@inject(TYPES.ITermController) private termController: TermController,
-		@inject(TYPES.ExeptionFilter) private exeptionFilter: ExeptionFilter,
+		@inject(TYPES.IExceptionFilter) private exceptionFilter: ExceptionFilter,
 		@inject(TYPES.IConfigService) private configService: IConfigService,
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
@@ -48,7 +48,7 @@ export class App {
 	}
 
 	useExceptionFilter(): void {
-		this.app.use(this.exeptionFilter.catch.bind(this.exeptionFilter));
+		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
 	}
 
 	public async init(): Promise<void> {

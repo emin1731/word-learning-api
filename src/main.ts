@@ -9,8 +9,8 @@ import { App } from './app';
 import { IUsersController } from './interfaces/controllers/user.controller.interface';
 import { IUsersService } from './interfaces/services/user.service.interface';
 import { UserController } from './controllers/user.controller';
-import { ExeptionFilter } from './error/exeption.filter';
-import { IExeptionFilter } from './interfaces/error/exeption.filter.interface';
+import { ExceptionFilter } from './error/exception.filter';
+import { IExceptionFilter } from './interfaces/error/exception.filter.interface';
 import { UserService } from './services/user.service';
 import { PrismaService } from './database/prisma.service';
 import { IUsersRepository } from './interfaces/repositories/users.repository.interface';
@@ -43,7 +43,7 @@ export interface IBootstrapReturn {
 export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<App>(TYPES.Application).to(App);
 	bind<ILoggerService>(TYPES.ILogger).to(LoggerService);
-	bind<IExeptionFilter>(TYPES.ExeptionFilter).to(ExeptionFilter);
+	bind<IExceptionFilter>(TYPES.IExceptionFilter).to(ExceptionFilter);
 	bind<IConfigService>(TYPES.IConfigService).to(ConfigService).inSingletonScope();
 	bind<PrismaService>(TYPES.PrismaService).to(PrismaService).inSingletonScope();
 
