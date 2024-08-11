@@ -17,40 +17,68 @@ export class ModuleService implements IModuleService {
 	async createModule(
 		authorId: string,
 		{ name, description, isPrivate }: ModuleDto,
-	): Promise<ModuleModel | null> {
-		const newModule = new Module(name, description, isPrivate);
+	): Promise<ModuleModel> {
+		try {
+			const newModule = new Module(name, description, isPrivate);
+			const existedModule = await this.moduleRepository.getModuleByName(authorId, newModule.name);
+			if (existedModule?.length !== 0) {
+				throw new Error('Module already exists');
+			}
 
-		const existedModule = await this.moduleRepository.getModuleByName(authorId, newModule.name);
-		if (existedModule?.length !== 0) {
-			return null;
+			return await this.moduleRepository.createModule(authorId, newModule);
+		} catch (error) {
+			throw new Error(`Failed to create module: ${(error as Error).message}`);
 		}
-
-		return await this.moduleRepository.createModule(authorId, newModule);
 	}
 
 	async updateModule(
 		authorId: string,
 		moduleId: string,
 		{ name, description, isPrivate }: ModuleDto,
-	): Promise<ModuleModel | null> {
-		const existedModule = await this.moduleRepository.getModuleById(authorId, moduleId);
-		if (!existedModule) {
-			return null;
+	): Promise<ModuleModel> {
+		try {
+			const existedModule = await this.moduleRepository.getModuleById(authorId, moduleId);
+			if (!existedModule) {
+				throw new Error('Module not found');
+			}
+
+			return await this.moduleRepository.updateModule(authorId, moduleId, {
+				name,
+				description,
+				isPrivate,
+			});
+		} catch (error) {
+			throw new Error(`Failed to update module: ${(error as Error).message}`);
 		}
-		return await this.moduleRepository.updateModule(authorId, moduleId, {
-			name,
-			description,
-			isPrivate,
-		});
 	}
-	async getModules(authorId: string): Promise<ModuleModel[] | null> {
-		return await this.moduleRepository.getModulesByUser(authorId);
+
+	async getModules(authorId: string): Promise<ModuleModel[]> {
+		try {
+			return await this.moduleRepository.getModulesByUser(authorId);
+		} catch (error) {
+			throw new Error(`Failed to retrieve modules: ${(error as Error).message}`);
+		}
 	}
-	async getModuleById(authorId: string, moduleId: string): Promise<ModuleModel | null> {
-		return await this.moduleRepository.getModuleById(authorId, moduleId);
+
+	async getModuleById(authorId: string, moduleId: string): Promise<ModuleModel> {
+		try {
+			const module = await this.moduleRepository.getModuleById(authorId, moduleId);
+			if (!module) {
+				throw new Error('Module not found');
+			}
+			return module;
+		} catch (error) {
+			throw new Error(`Failed to retrieve module: ${(error as Error).message}`);
+		}
 	}
 
 	async deleteModule(authorId: string, moduleId: string): Promise<void> {
-		return await this.moduleRepository.deleteModule(authorId, moduleId);
+		try {
+			await this.moduleRepository.deleteModule(authorId, moduleId);
+		} catch (error) {
+			if (error instanceof Error) {
+				throw new Error(`Failed to delete module: ${error.message}`);
+			}
+		}
 	}
 }

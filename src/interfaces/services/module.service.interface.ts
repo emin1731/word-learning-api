@@ -5,7 +5,7 @@ export interface IModuleService {
 	createModule: (
 		authorId: string,
 		{ name, description, isPrivate }: ModuleDto,
-	) => Promise<ModuleModel | null>;
+	) => Promise<ModuleModel>;
 	updateModule: (
 		authorId: string,
 		moduleId: string,
@@ -13,5 +13,5 @@ export interface IModuleService {
 	) => Promise<ModuleModel | null>;
 	deleteModule: (authorId: string, moduleId: string) => Promise<void>;
 	getModules: (authorId: string) => Promise<ModuleModel[] | null>;
-	getModuleById: (authorId: string, moduleId: string) => Promise<ModuleModel | null>;
+	getModuleById: (authorId: string, moduleId: string) => Promise<ModuleModel>;
 }

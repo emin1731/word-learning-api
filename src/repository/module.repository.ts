@@ -20,7 +20,7 @@ export class ModuleRepository implements IModuleRepository {
 			where: { authorId: userId },
 		});
 	}
-	async getModuleByName(name: string): Promise<ModuleModel[] | null> {
+	async getModuleByName(name: string): Promise<ModuleModel[]> {
 		return await this.prismaService.client.moduleModel.findMany({
 			where: { name },
 		});

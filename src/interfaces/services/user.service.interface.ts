@@ -3,8 +3,8 @@ import { UserLoginDto } from '../../dto/user.login.dto';
 import { UserRegisterDto } from '../../dto/user.register.dto';
 
 export interface IUsersService {
-	// createUser: ({ username, email, password }: UserRegisterDto) => Promise<UserModel | null>;
-	// validateUser: ({ email, password }: UserLoginDto) => Promise<boolean>;
+	createUser: ({ username, email, password }: UserRegisterDto) => Promise<UserModel | null>;
+	validateUser: ({ email, password }: UserLoginDto) => Promise<boolean>;
 	getUserInfo: ({ email, password }: UserLoginDto) => Promise<UserModel | null>;
 	getUserInfoById: (id: string) => Promise<UserModel | null>;
 }
