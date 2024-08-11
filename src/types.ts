@@ -16,4 +16,5 @@ export const TYPES = {
 	IModuleController: Symbol.for('IModuleController'),
 	ITermRepository: Symbol.for('ITermRepository'),
 	ITermService: Symbol.for('ITermService'),
+	ITermController: Symbol.for('ITermController'),
 };

@@ -90,7 +90,6 @@ export class AuthController extends BaseController implements IAuthController {
 			this.ok(res, newTokens);
 		} catch (err) {
 			next(err);
-			console.log('ERROR', err);
 		}
 	}
 

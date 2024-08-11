@@ -14,7 +14,7 @@ import { IExeptionFilter } from './interfaces/error/exeption.filter.interface';
 import { UserService } from './services/user.service';
 import { PrismaService } from './database/prisma.service';
 import { IUsersRepository } from './interfaces/repositories/users.repository.interface';
-import { UsersRepository } from './repository/users.repository';
+import { UsersRepository } from './repository/user.repository';
 import { IAuthController } from './interfaces/controllers/auth.controller.interface';
 import { AuthRepository } from './repository/auth.repository';
 import { AuthController } from './controllers/auth.controller';
@@ -32,6 +32,8 @@ import { ITermRepository } from './interfaces/repositories/term.repository.inter
 import { TermRepository } from './repository/term.repository';
 import { ITermService } from './interfaces/services/term.service.interface';
 import { TermService } from './services/term.service';
+import { ITermController } from './interfaces/controllers/term.controller.interface';
+import { TermController } from './controllers/term.controller';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -60,6 +62,7 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 
 	bind<ITermRepository>(TYPES.ITermRepository).to(TermRepository);
 	bind<ITermService>(TYPES.ITermService).to(TermService);
+	bind<ITermController>(TYPES.ITermController).to(TermController);
 });
 
 function bootstrap(): IBootstrapReturn {
