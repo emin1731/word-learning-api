@@ -14,6 +14,8 @@ import { AuthMiddleware } from './middlewares/auth.middleware';
 import { ModuleController } from './controllers/module.controller';
 import { TermController } from './controllers/term.controller';
 
+import cors from 'cors';
+
 @injectable()
 export class App {
 	app: Express;
@@ -46,12 +48,23 @@ export class App {
 		this.app.use('/', this.moduleController.router);
 		this.app.use('/', this.termController.router);
 	}
+	useCors(): void {
+		// Enable CORS for all routes
+		this.app.use(
+			cors({
+				origin: 'http://localhost:5173', // Replace with your frontend origin
+				methods: 'GET,POST,PUT,DELETE', // Specify the allowed methods
+				credentials: true, // Include credentials like cookies, authorization headers
+			}),
+		);
+	}
 
 	useExceptionFilter(): void {
 		this.app.use(this.exceptionFilter.catch.bind(this.exceptionFilter));
 	}
 
 	public async init(): Promise<void> {
+		this.useCors();
 		this.useMiddleware();
 		this.useRoutes();
 		this.useExceptionFilter();

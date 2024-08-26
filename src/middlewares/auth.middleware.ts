@@ -16,6 +16,10 @@ export class AuthMiddleware implements IMiddleware {
 	execute(req: Request, res: Response, next: NextFunction): ExpressReturnType | void {
 		const auth = req.headers.authorization;
 
+		if (req.path === '/auth/login' || req.path === '/auth/register') {
+			return next(); // Skip auth middleware for login/register routes
+		}
+
 		if (!auth) {
 			this.loggerService.error('[AuthMiddleware] No authorization header found.');
 			return next();

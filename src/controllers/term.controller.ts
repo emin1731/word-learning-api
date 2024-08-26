@@ -6,6 +6,8 @@ import { ITermController } from '../interfaces/controllers/term.controller.inter
 import { Request, Response, NextFunction } from 'express';
 import { ITermService } from '../interfaces/services/term.service.interface';
 import { HTTPError } from '../error/http-error';
+import { ValidateMiddleware } from '../middlewares/validate.middleware';
+import { TermDto } from '../dto/term.dto';
 
 @injectable()
 export class TermController extends BaseController implements ITermController {
@@ -34,11 +36,13 @@ export class TermController extends BaseController implements ITermController {
 				path: '/modules/:moduleId/terms',
 				method: 'post',
 				function: this.createTerm,
+				middleware: [new ValidateMiddleware(TermDto)],
 			},
 			{
 				path: '/modules/:moduleId/terms/:termId',
 				method: 'put',
 				function: this.updateTerm,
+				middleware: [new ValidateMiddleware(TermDto)],
 			},
 		]);
 	}
