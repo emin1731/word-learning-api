@@ -49,7 +49,7 @@ export class TermRepository implements ITermRepository {
 	): Promise<TermModel> {
 		return await this.prismaService.client.termModel.update({
 			where: {
-				id: moduleId,
+				id: termId,
 				moduleId: moduleId,
 			},
 			data: termData,
