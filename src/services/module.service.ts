@@ -53,7 +53,7 @@ export class ModuleService implements IModuleService {
 		}
 	}
 
-	async getModules(authorId: string, sortBy: SortBy): Promise<ModuleModel[]> {
+	async getModules(authorId: string, sortBy: SortBy, searchQuery: string): Promise<ModuleModel[]> {
 		let orderBy: Prisma.ModuleModelOrderByWithRelationInput;
 		switch (sortBy) {
 			case 'name_asc':
@@ -73,7 +73,7 @@ export class ModuleService implements IModuleService {
 		}
 
 		try {
-			return await this.moduleRepository.getModulesByUser(authorId, orderBy);
+			return await this.moduleRepository.getModulesByUser(authorId, orderBy, searchQuery);
 		} catch (error) {
 			throw new Error(`Failed to retrieve modules: ${(error as Error).message}`);
 		}

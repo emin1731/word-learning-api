@@ -18,9 +18,15 @@ export class ModuleRepository implements IModuleRepository {
 	async getModulesByUser(
 		userId: string,
 		orderBy: Prisma.ModuleModelOrderByWithRelationInput,
+		searchQuery?: string,
 	): Promise<ModuleModel[]> {
 		return await this.prismaService.client.moduleModel.findMany({
-			where: { authorId: userId },
+			where: {
+				authorId: userId,
+				name: {
+					contains: searchQuery || '',
+				} as Prisma.StringFilter<'ModuleModel'>,
+			},
 			orderBy,
 		});
 	}

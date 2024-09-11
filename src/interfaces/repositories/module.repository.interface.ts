@@ -6,6 +6,7 @@ export interface IModuleRepository {
 	getModulesByUser: (
 		userId: string,
 		orderBy: Prisma.ModuleModelOrderByWithRelationInput,
+		searchQuery?: string,
 	) => Promise<ModuleModel[]>;
 	getModuleByName: (userId: string, name: string) => Promise<ModuleModel[] | null>;
 	getModuleById: (userId: string, moduleId: string) => Promise<ModuleModel | null>;

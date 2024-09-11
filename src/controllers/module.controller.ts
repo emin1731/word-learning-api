@@ -55,7 +55,7 @@ export class ModuleController extends BaseController implements IModuleControlle
 			return next(new HTTPError(401, 'userId in Bearer token is missing'));
 		}
 
-		const { sortBy } = req.query;
+		const { sortBy, searchQuery } = req.query;
 
 		const validSortOptions = ['name_asc', 'name_desc', 'date_asc', 'date_desc'];
 
@@ -63,7 +63,11 @@ export class ModuleController extends BaseController implements IModuleControlle
 			return next(new HTTPError(400, 'Invalid sort option'));
 		}
 
-		const modules = await this.moduleService.getModules(req.body.payload.userId, sortBy as SortBy);
+		const modules = await this.moduleService.getModules(
+			req.body.payload.userId,
+			sortBy as SortBy,
+			searchQuery as string,
+		);
 		if (!modules) {
 			return next(new HTTPError(404, 'Modules not found'));
 		}
