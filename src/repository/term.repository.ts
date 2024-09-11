@@ -1,4 +1,4 @@
-import { TermModel } from '@prisma/client';
+import { Prisma, TermModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { PrismaService } from '../database/prisma.service';
 import { TYPES } from '../types';
@@ -24,9 +24,13 @@ export class TermRepository implements ITermRepository {
 		});
 	}
 
-	async getTerms(moduleId: string): Promise<TermModel[]> {
+	async getTerms(
+		moduleId: string,
+		orderBy: Prisma.TermModelOrderByWithRelationInput,
+	): Promise<TermModel[]> {
 		return await this.prismaService.client.termModel.findMany({
 			where: { moduleId: moduleId },
+			orderBy,
 		});
 	}
 

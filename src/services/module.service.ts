@@ -6,6 +6,7 @@ import { ModuleDto } from '../dto/module.dto';
 import { Module } from '../models/module.entity';
 import { ModuleModel, Prisma } from '@prisma/client';
 import { IModuleRepository } from '../interfaces/repositories/module.repository.interface';
+import { SortBy } from '../interfaces/common/sort-by.interface';
 
 @injectable()
 export class ModuleService implements IModuleService {
@@ -52,7 +53,7 @@ export class ModuleService implements IModuleService {
 		}
 	}
 
-	async getModules(authorId: string, sortBy: string): Promise<ModuleModel[]> {
+	async getModules(authorId: string, sortBy: SortBy): Promise<ModuleModel[]> {
 		let orderBy: Prisma.ModuleModelOrderByWithRelationInput;
 		switch (sortBy) {
 			case 'name_asc':

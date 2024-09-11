@@ -8,6 +8,7 @@ import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IModuleController } from '../interfaces/controllers/module.controller.interface';
 import { IModuleService } from '../interfaces/services/module.service.interface';
 import { ModuleDto } from '../dto/module.dto';
+import { SortBy } from '../interfaces/common/sort-by.interface';
 
 @injectable()
 export class ModuleController extends BaseController implements IModuleController {
@@ -62,7 +63,7 @@ export class ModuleController extends BaseController implements IModuleControlle
 			return next(new HTTPError(400, 'Invalid sort option'));
 		}
 
-		const modules = await this.moduleService.getModules(req.body.payload.userId, String(sortBy));
+		const modules = await this.moduleService.getModules(req.body.payload.userId, sortBy as SortBy);
 		if (!modules) {
 			return next(new HTTPError(404, 'Modules not found'));
 		}

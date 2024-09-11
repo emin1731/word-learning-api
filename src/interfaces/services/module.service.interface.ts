@@ -1,5 +1,6 @@
 import { ModuleModel } from '@prisma/client';
 import { ModuleDto } from '../../dto/module.dto';
+import { SortBy } from '../common/sort-by.interface';
 
 export interface IModuleService {
 	createModule: (
@@ -12,6 +13,6 @@ export interface IModuleService {
 		{ name, description, isPrivate }: ModuleDto,
 	) => Promise<ModuleModel | null>;
 	deleteModule: (authorId: string, moduleId: string) => Promise<void>;
-	getModules: (authorId: string, sortBy: string) => Promise<ModuleModel[] | null>;
+	getModules: (authorId: string, sortBy: SortBy) => Promise<ModuleModel[] | null>;
 	getModuleById: (authorId: string, moduleId: string) => Promise<ModuleModel>;
 }

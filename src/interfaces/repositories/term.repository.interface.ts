@@ -1,9 +1,12 @@
-import { TermModel } from '@prisma/client';
+import { Prisma, TermModel } from '@prisma/client';
 import { Term } from '../../models/term.entity';
 
 export interface ITermRepository {
 	createTerm: (moduleId: string, term: Term) => Promise<TermModel>;
-	getTerms: (moduleId: string) => Promise<TermModel[]>;
+	getTerms: (
+		moduleId: string,
+		orderBy: Prisma.TermModelOrderByWithRelationInput,
+	) => Promise<TermModel[]>;
 	getTermById: (moduleId: string, termId: string) => Promise<TermModel | null>;
 	deleteTerm: (moduleId: string, termId: string) => Promise<void>;
 	updateTerm: (

@@ -8,6 +8,7 @@ import { ITermService } from '../interfaces/services/term.service.interface';
 import { HTTPError } from '../error/http-error';
 import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { TermDto } from '../dto/term.dto';
+import { SortBy } from '../interfaces/common/sort-by.interface';
 
 @injectable()
 export class TermController extends BaseController implements ITermController {
@@ -77,8 +78,20 @@ export class TermController extends BaseController implements ITermController {
 			return next(new HTTPError(401, 'userId in Bearer token is missing'));
 		}
 
+		const { sortBy } = req.query;
+
+		const validSortOptions = ['name_asc', 'name_desc', 'date_asc', 'date_desc'];
+
+		if (!validSortOptions.includes(String(sortBy))) {
+			return next(new HTTPError(400, 'Invalid sort option'));
+		}
+
 		try {
-			const terms = await this.termService.getTerms(req.body.payload.userId, req.params.moduleId);
+			const terms = await this.termService.getTerms(
+				req.body.payload.userId,
+				req.params.moduleId,
+				sortBy as SortBy,
+			);
 			if (!terms) {
 				return next(new HTTPError(404, 'Modules not found'));
 			}
