@@ -3,8 +3,8 @@ import { IConfigService } from '../interfaces/config/config.service.interface';
 import { TYPES } from '../types';
 import { IModuleService } from '../interfaces/services/module.service.interface';
 import { ModuleDto } from '../dto/module.dto';
-import { Module } from '../models/module.entitry';
-import { ModuleModel } from '@prisma/client';
+import { Module } from '../models/module.entity';
+import { ModuleModel, Prisma } from '@prisma/client';
 import { IModuleRepository } from '../interfaces/repositories/module.repository.interface';
 
 @injectable()
@@ -52,9 +52,27 @@ export class ModuleService implements IModuleService {
 		}
 	}
 
-	async getModules(authorId: string): Promise<ModuleModel[]> {
+	async getModules(authorId: string, sortBy: string): Promise<ModuleModel[]> {
+		let orderBy: Prisma.ModuleModelOrderByWithRelationInput;
+		switch (sortBy) {
+			case 'name_asc':
+				orderBy = { name: 'asc' };
+				break;
+			case 'name_desc':
+				orderBy = { name: 'desc' };
+				break;
+			case 'date_asc':
+				orderBy = { createdAt: 'asc' };
+				break;
+			case 'date_desc':
+				orderBy = { createdAt: 'desc' };
+				break;
+			default:
+				orderBy = { createdAt: 'desc' }; // Default sorting
+		}
+
 		try {
-			return await this.moduleRepository.getModulesByUser(authorId);
+			return await this.moduleRepository.getModulesByUser(authorId, orderBy);
 		} catch (error) {
 			throw new Error(`Failed to retrieve modules: ${(error as Error).message}`);
 		}

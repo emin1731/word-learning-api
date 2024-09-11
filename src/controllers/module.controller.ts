@@ -54,7 +54,15 @@ export class ModuleController extends BaseController implements IModuleControlle
 			return next(new HTTPError(401, 'userId in Bearer token is missing'));
 		}
 
-		const modules = await this.moduleService.getModules(req.body.payload.userId);
+		const { sortBy } = req.query;
+
+		const validSortOptions = ['name_asc', 'name_desc', 'date_asc', 'date_desc'];
+
+		if (!validSortOptions.includes(String(sortBy))) {
+			return next(new HTTPError(400, 'Invalid sort option'));
+		}
+
+		const modules = await this.moduleService.getModules(req.body.payload.userId, String(sortBy));
 		if (!modules) {
 			return next(new HTTPError(404, 'Modules not found'));
 		}
@@ -83,11 +91,15 @@ export class ModuleController extends BaseController implements IModuleControlle
 			return next(new HTTPError(401, 'userId in Bearer token is missing'));
 		}
 
-		const module = await this.moduleService.getModuleById(req.body.payload.userId, req.params.id);
-		if (!module) {
+		try {
+			const module = await this.moduleService.getModuleById(req.body.payload.userId, req.params.id);
+			if (!module) {
+				return next(new HTTPError(404, 'Module not found'));
+			}
+			this.ok(res, module);
+		} catch (error) {
 			return next(new HTTPError(404, 'Module not found'));
 		}
-		this.ok(res, module);
 	}
 	async deleteModule(req: Request, res: Response, next: NextFunction): Promise<void> {
 		if (!req.body.payload) {

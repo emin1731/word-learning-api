@@ -12,6 +12,6 @@ export interface IModuleService {
 		{ name, description, isPrivate }: ModuleDto,
 	) => Promise<ModuleModel | null>;
 	deleteModule: (authorId: string, moduleId: string) => Promise<void>;
-	getModules: (authorId: string) => Promise<ModuleModel[] | null>;
+	getModules: (authorId: string, sortBy: string) => Promise<ModuleModel[] | null>;
 	getModuleById: (authorId: string, moduleId: string) => Promise<ModuleModel>;
 }
