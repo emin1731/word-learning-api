@@ -27,9 +27,15 @@ export class TermRepository implements ITermRepository {
 	async getTerms(
 		moduleId: string,
 		orderBy: Prisma.TermModelOrderByWithRelationInput,
+		searchQuery?: string,
 	): Promise<TermModel[]> {
 		return await this.prismaService.client.termModel.findMany({
-			where: { moduleId: moduleId },
+			where: {
+				moduleId: moduleId,
+				term: {
+					contains: searchQuery || '',
+				} as Prisma.StringFilter<'TermModel'>,
+			},
 			orderBy,
 		});
 	}

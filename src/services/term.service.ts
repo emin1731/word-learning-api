@@ -70,7 +70,12 @@ export class TermService implements ITermService {
 		await this.termRepository.deleteTerm(moduleId, termId);
 	}
 
-	async getTerms(userId: string, moduleId: string, sortBy: SortBy): Promise<TermModel[] | null> {
+	async getTerms(
+		userId: string,
+		moduleId: string,
+		sortBy: SortBy,
+		searchQuery: string,
+	): Promise<TermModel[] | null> {
 		const existedModule = await this.moduleRepository.getModuleById(userId, moduleId);
 		if (!existedModule) {
 			throw new Error('Module does not exist');
@@ -95,7 +100,7 @@ export class TermService implements ITermService {
 				orderBy = { createdAt: 'desc' }; // Default sorting
 		}
 
-		return await this.termRepository.getTerms(moduleId, orderBy);
+		return await this.termRepository.getTerms(moduleId, orderBy, searchQuery);
 	}
 
 	async getTermById(userId: string, moduleId: string, termId: string): Promise<TermModel | null> {

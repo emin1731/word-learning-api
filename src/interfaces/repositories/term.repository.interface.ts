@@ -6,6 +6,7 @@ export interface ITermRepository {
 	getTerms: (
 		moduleId: string,
 		orderBy: Prisma.TermModelOrderByWithRelationInput,
+		searchQuery?: string,
 	) => Promise<TermModel[]>;
 	getTermById: (moduleId: string, termId: string) => Promise<TermModel | null>;
 	deleteTerm: (moduleId: string, termId: string) => Promise<void>;

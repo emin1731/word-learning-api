@@ -78,7 +78,7 @@ export class TermController extends BaseController implements ITermController {
 			return next(new HTTPError(401, 'userId in Bearer token is missing'));
 		}
 
-		const { sortBy } = req.query;
+		const { sortBy, searchQuery } = req.query;
 
 		const validSortOptions = ['name_asc', 'name_desc', 'date_asc', 'date_desc'];
 
@@ -91,6 +91,7 @@ export class TermController extends BaseController implements ITermController {
 				req.body.payload.userId,
 				req.params.moduleId,
 				sortBy as SortBy,
+				searchQuery as string,
 			);
 			if (!terms) {
 				return next(new HTTPError(404, 'Modules not found'));

@@ -15,6 +15,11 @@ export interface ITermService {
 		{ term, definition, status, isStarred }: TermDto,
 	) => Promise<TermModel | null>;
 	deleteTerm: (userId: string, moduleId: string, termId: string) => Promise<void>;
-	getTerms: (userId: string, moduleId: string, sortBy: SortBy) => Promise<TermModel[] | null>;
+	getTerms: (
+		userId: string,
+		moduleId: string,
+		sortBy: SortBy,
+		searchQuery: string,
+	) => Promise<TermModel[] | null>;
 	getTermById: (userId: string, moduleId: string, termId: string) => Promise<TermModel | null>;
 }
