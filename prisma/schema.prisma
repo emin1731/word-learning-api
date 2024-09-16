@@ -20,6 +20,7 @@ model UserModel {
   username      String         @unique
   password      String
   refreshTokens RefreshToken[]
+  resetTokens   ResetToken[]   
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   userProfile   ProfileModel?
@@ -34,6 +35,15 @@ model RefreshToken {
   revoked     Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+}
+
+model ResetToken {
+  id        String    @id @unique @default(uuid())
+  token     String    @unique
+  userId    String
+  user      UserModel @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
 }
 
 model ProfileModel {
