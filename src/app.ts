@@ -52,9 +52,9 @@ export class App {
 		// Enable CORS for all routes
 		this.app.use(
 			cors({
-				origin: 'http://localhost:5173', // Replace with your frontend origin
-				methods: 'GET,POST,PUT,DELETE', // Specify the allowed methods
-				credentials: true, // Include credentials like cookies, authorization headers
+				origin: 'http://localhost:5173',
+				methods: 'GET,POST,PUT,DELETE',
+				credentials: true,
 			}),
 		);
 	}
