@@ -33,7 +33,7 @@ export class App {
 		@inject(TYPES.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
-		this.port = +configService.get('PORT');
+		this.port = +configService.get('API_PORT');
 	}
 
 	useMiddleware(): void {

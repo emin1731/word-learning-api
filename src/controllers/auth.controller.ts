@@ -102,4 +102,24 @@ export class AuthController extends BaseController implements IAuthController {
 			next(err);
 		}
 	}
+
+	async requestPasswordReset({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { email } = body;
+			await this.authService.requestPasswordReset(email);
+			this.ok(res, { message: `Password reset link sent if email exists` });
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async resetPassword({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { token, newPassword } = body;
+			await this.authService.resetPassword(token, newPassword);
+			this.ok(res, { message: `Password reset successful` });
+		} catch (err) {
+			next(err);
+		}
+	}
 }

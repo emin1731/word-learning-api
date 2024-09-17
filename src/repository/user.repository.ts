@@ -20,4 +20,10 @@ export class UsersRepository implements IUsersRepository {
 	async findById(id: string): Promise<UserModel | null> {
 		return await this.prismaService.client.userModel.findUnique({ where: { id } });
 	}
+	async updatePassword(id: string, password: string): Promise<UserModel> {
+		return await this.prismaService.client.userModel.update({
+			where: { id },
+			data: { password },
+		});
+	}
 }
