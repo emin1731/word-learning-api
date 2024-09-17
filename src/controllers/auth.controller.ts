@@ -11,6 +11,9 @@ import { ValidateMiddleware } from '../middlewares/validate.middleware';
 import { IAuthController } from '../interfaces/controllers/auth.controller.interface';
 import { IAuthService } from '../interfaces/services/auth.service.interface';
 import { RefreshTokenDto } from '../dto/refresh-token';
+import { ChangePasswordDto } from '../dto/change-password.dto';
+import { ResetPasswordDto } from '../dto/reset-password.dto';
+import { RequestPasswordResetDto } from '../dto/request-password-reset.dto';
 
 @injectable()
 export class AuthController extends BaseController implements IAuthController {
@@ -48,16 +51,19 @@ export class AuthController extends BaseController implements IAuthController {
 				path: '/requestPasswordReset',
 				method: 'post',
 				function: this.requestPasswordReset,
+				middleware: [new ValidateMiddleware(RequestPasswordResetDto)],
 			},
 			{
 				path: '/resetPassword',
 				method: 'post',
 				function: this.resetPassword,
+				middleware: [new ValidateMiddleware(ResetPasswordDto)],
 			},
 			{
 				path: '/changePassword',
 				method: 'post',
 				function: this.changePassword,
+				middleware: [new ValidateMiddleware(ChangePasswordDto)],
 			},
 		]);
 	}
