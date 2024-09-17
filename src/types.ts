@@ -17,4 +17,7 @@ export const TYPES = {
 	ITermRepository: Symbol.for('ITermRepository'),
 	ITermService: Symbol.for('ITermService'),
 	ITermController: Symbol.for('ITermController'),
+
+	IResetTokenRepository: Symbol.for('IResetTokenRepository'),
+	ITokenSender: Symbol.for('ITokenSender'),
 };

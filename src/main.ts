@@ -34,6 +34,10 @@ import { ITermService } from './interfaces/services/term.service.interface';
 import { TermService } from './services/term.service';
 import { ITermController } from './interfaces/controllers/term.controller.interface';
 import { TermController } from './controllers/term.controller';
+import { IResetTokenRepository } from './interfaces/repositories/reset-token.repository.interface';
+import { ResetTokenRepository } from './repository/reset-token.repository';
+import { ITokenSender } from './interfaces/common/token-sender';
+import { TokenSender } from './common/token-sender';
 
 export interface IBootstrapReturn {
 	appContainer: Container;
@@ -63,6 +67,9 @@ export const appBindings = new ContainerModule((bind: interfaces.Bind) => {
 	bind<ITermRepository>(TYPES.ITermRepository).to(TermRepository);
 	bind<ITermService>(TYPES.ITermService).to(TermService);
 	bind<ITermController>(TYPES.ITermController).to(TermController);
+
+	bind<IResetTokenRepository>(TYPES.IResetTokenRepository).to(ResetTokenRepository);
+	bind<ITokenSender>(TYPES.ITokenSender).to(TokenSender);
 });
 
 function bootstrap(): IBootstrapReturn {

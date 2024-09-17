@@ -6,4 +6,7 @@ export interface IResetTokenRepository {
 		userId: string;
 		expiresAt: Date;
 	}) => Promise<ResetToken>;
+	findByToken(token: string): Promise<ResetToken | null>;
+	deleteByToken(token: string): Promise<ResetToken>;
+	deleteByUserId(userId: string, token: string): Promise<ResetToken>;
 }
