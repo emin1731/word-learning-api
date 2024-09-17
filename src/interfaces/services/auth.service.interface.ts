@@ -8,4 +8,5 @@ export interface IAuthService {
 	revokeTokens: (userId: string) => Promise<void>;
 	requestPasswordReset(email: string): Promise<void>;
 	resetPassword(token: string, newPassword: string): Promise<void>;
+	changePassword(userId: string, currentPassword: string, newPassword: string): Promise<void>;
 }

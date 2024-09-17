@@ -44,6 +44,21 @@ export class AuthController extends BaseController implements IAuthController {
 				method: 'post',
 				function: this.revokeRefreshTokens,
 			},
+			{
+				path: '/requestPasswordReset',
+				method: 'post',
+				function: this.requestPasswordReset,
+			},
+			{
+				path: '/resetPassword',
+				method: 'post',
+				function: this.resetPassword,
+			},
+			{
+				path: '/changePassword',
+				method: 'post',
+				function: this.changePassword,
+			},
 		]);
 	}
 
@@ -118,6 +133,15 @@ export class AuthController extends BaseController implements IAuthController {
 			const { token, newPassword } = body;
 			await this.authService.resetPassword(token, newPassword);
 			this.ok(res, { message: `Password reset successful` });
+		} catch (err) {
+			next(err);
+		}
+	}
+	async changePassword({ body }: Request, res: Response, next: NextFunction): Promise<void> {
+		try {
+			const { currentPassword, newPassword } = body;
+			const userId = body.payload.userId; // Extract from token middleware
+			await this.authService.changePassword(userId, currentPassword, newPassword);
 		} catch (err) {
 			next(err);
 		}

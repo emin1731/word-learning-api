@@ -10,7 +10,7 @@ import { randomBytes } from 'crypto';
 import { addMinutes } from 'date-fns';
 import { IResetTokenRepository } from '../interfaces/repositories/reset-token.repository.interface';
 import { ITokenSender } from '../interfaces/common/token-sender';
-import { hash } from 'bcryptjs';
+import { compare, hash } from 'bcryptjs';
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -123,5 +123,25 @@ export class AuthService implements IAuthService {
 
 		// Optionally, delete the token after use
 		await this.resetTokenRepository.deleteByUserId(resetToken.userId, resetToken.token);
+	}
+	async changePassword(
+		userId: string,
+		currentPassword: string,
+		newPassword: string,
+	): Promise<void> {
+		const user = await this.usersRepository.findById(userId);
+		if (!user) {
+			throw new Error('[AuthService - changePassword()]User not found');
+		}
+
+		// Verify current password
+		const isPasswordValid = await compare(currentPassword, user.password);
+		if (!isPasswordValid) {
+			throw new Error('[AuthService - changePassword()] Invalid password');
+		}
+
+		// Hash the new password
+		const hashedPassword = await hash(newPassword, 10);
+		await this.usersRepository.updatePassword(userId, hashedPassword);
 	}
 }
