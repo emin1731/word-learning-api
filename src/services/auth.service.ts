@@ -118,7 +118,7 @@ export class AuthService implements IAuthService {
 			throw new Error('Invalid or expired token');
 		}
 
-		const hashedPassword = await hash(newPassword, 10);
+		const hashedPassword = await hash(newPassword, +this.configService.get('SALT'));
 		await this.usersRepository.updatePassword(resetToken.userId, hashedPassword);
 
 		// Optionally, delete the token after use
@@ -141,7 +141,7 @@ export class AuthService implements IAuthService {
 		}
 
 		// Hash the new password
-		const hashedPassword = await hash(newPassword, 10);
+		const hashedPassword = await hash(newPassword, +this.configService.get('SALT'));
 		await this.usersRepository.updatePassword(userId, hashedPassword);
 	}
 }

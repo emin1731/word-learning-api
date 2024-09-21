@@ -11,23 +11,27 @@ export class TokenSender implements ITokenSender {
 	private jwtSecret: string;
 
 	constructor(@inject(TYPES.IConfigService) private configService: IConfigService) {
-		// Initialize the transporter with configuration from the config service
 		this.transporter = nodemailer.createTransport({
-			service: 'gmail',
+			service: this.configService.get('NODEMAILER_SERVICE'),
+			host: this.configService.get('NODEMAILER_HOST'),
+			port: +this.configService.get('NODEMAILER_PORT'),
 			auth: {
-				user: this.configService.get('EMAIL_USERNAME'),
-				pass: this.configService.get('EMAIL_PASSWORD'),
+				user: this.configService.get('NODEMAILER_USERNAME'),
+				pass: this.configService.get('NODEMAILER_PASSWORD'),
 			},
+			tls: {
+				rejectUnauthorized: false, // Add this if there are issues with SSL certificates
+			},
+			// logger: true, // Enable logging
+			// debug: true, // Enable debug output
 		});
 
 		// Get JWT secret from config
 		this.jwtSecret = this.configService.get('JWT_SECRET');
 	}
 
-	// Method to send an email verification token
 	public async sendVerificationEmail(toEmail: string): Promise<void> {
 		try {
-			// Create a JWT token that expires in 10 minutes
 			const token = jwt.sign(
 				{
 					data: 'Token Data',
@@ -36,18 +40,34 @@ export class TokenSender implements ITokenSender {
 				{ expiresIn: '10m' },
 			);
 
-			// Configure the email details
 			const mailConfigurations = {
 				from: this.configService.get('EMAIL_USERNAME'), // Sender email from config
 				to: toEmail, // Recipient email
-				subject: 'Email Verification', // Email subject
-				text: `Hi! There, You have recently visited our website and entered your email.
-               Please follow the given link to verify your email:
-               http://localhost:${this.configService.get('CLIENT_PORT') || 8001}/verify/${token} 
-               Thanks`,
+				subject: 'Verify Your Email - Learn!', // Email subject
+				html: `
+					<div style="font-family: Arial, sans-serif; color: #7D5A50;">
+						<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #F9F6F7;">
+							<h2 style="text-align: center; color: #7D5A50;">Email Verification</h2>
+							<p>Hi,</p>
+							<p>Thank you for visiting <strong>Learn!</strong>. To complete the process and verify your email, please click the button below:</p>
+							<div style="text-align: center; margin: 30px 0;">
+								<a href="http://localhost:${this.configService.get('CLIENT_PORT') || 8001}/verify/${token}" 
+								   style="background-color: #FFE8D6; color: #7D5A50; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Verify Email</a>
+							</div>
+							<p>If you didn't request this, you can safely ignore this email.</p>
+							<p>Thanks,<br>The Learn! Team</p>
+							<hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+							<p style="text-align: center; font-size: 12px; color: #777;">
+								If you're having trouble with the button, copy and paste the following link into your browser:<br>
+								<a href="http://localhost:${this.configService.get('CLIENT_PORT') || 8001}/verify/${token}" style="color: #7D5A50;">
+									http://localhost:${this.configService.get('CLIENT_PORT') || 8001}/verify/${token}
+								</a>
+							</p>
+						</div>
+					</div>
+				`,
 			};
 
-			// Send the email
 			const info = await this.transporter.sendMail(mailConfigurations);
 			console.log('Email Sent Successfully', info);
 		} catch (error) {
@@ -56,24 +76,38 @@ export class TokenSender implements ITokenSender {
 		}
 	}
 	async sendResetPasswordEmail(email: string, token: string): Promise<void> {
-		const resetPasswordUrl = `http://localhost:${this.configService.get('CLIENT_PORT') || 8001}/reset-password?token=${token}`;
+		const resetPasswordUrl = `http://localhost:${this.configService.get('CLIENT_PORT') || 5173}/reset-password?token=${token}`;
 
 		const mailOptions = {
 			from: this.configService.get('EMAIL_USERNAME'),
 			to: email, // Receiver's email
-			subject: 'Reset Password', // Email subject
-			html: `<p>You requested a password reset.</p>
-				 <p>Click this link to reset your password: 
-				 <a href="${resetPasswordUrl}">${resetPasswordUrl}</a></p>
-				 <p>If you did not request this, please ignore this email.</p>`,
+			subject: 'Reset Your Password - Learn!',
+			html: `
+				<div style="font-family: Arial, sans-serif; color: #7D5A50;">
+					<div style="max-width: 600px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px; background-color: #F9F6F7;">
+						<h2 style="text-align: center; color: #7D5A50;">Password Reset</h2>
+						<p>Hi,</p>
+						<p>You recently requested to reset your password for your <strong>Learn!</strong> account. Please click the button below to reset it:</p>
+						<div style="text-align: center; margin: 30px 0;">
+							<a href="${resetPasswordUrl}" style="background-color: #FFE8D6; color: #7D5A50; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
+						</div>
+						<p>If you didn't request this, you can safely ignore this email. Your password will not be changed.</p>
+						<p>Thanks,<br>The Learn! Team</p>
+						<hr style="border: 0; border-top: 1px solid #eee; margin: 40px 0;">
+						<p style="text-align: center; font-size: 12px; color: #777;">
+							If you're having trouble with the button, copy and paste the following link into your browser:<br>
+							<a href="${resetPasswordUrl}" style="color: #7D5A50;">${resetPasswordUrl}</a>
+						</p>
+					</div>
+				</div>
+			`,
 		};
 
 		try {
 			const info = await this.transporter.sendMail(mailOptions);
 			console.log(`Email sent: ${info.response}`);
 		} catch (error) {
-			console.error(`Error sending email: ${error}`);
-			throw new Error('Could not send reset password email.');
+			throw new Error(`[TokenSender] Error sending email: ${error}`);
 		}
 	}
 }
