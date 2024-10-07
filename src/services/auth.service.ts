@@ -11,6 +11,8 @@ import { addMinutes } from 'date-fns';
 import { IResetTokenRepository } from '../interfaces/repositories/reset-token.repository.interface';
 import { ITokenSender } from '../interfaces/common/token-sender';
 import { compare, hash } from 'bcryptjs';
+import { User } from '../models/user.entity';
+import { ILoggerService } from '../interfaces/common/logger.interface';
 
 @injectable()
 export class AuthService implements IAuthService {
@@ -21,6 +23,7 @@ export class AuthService implements IAuthService {
 		@inject(TYPES.IUsersRepository) private usersRepository: IUsersRepository,
 		@inject(TYPES.IResetTokenRepository) private resetTokenRepository: IResetTokenRepository,
 		@inject(TYPES.ITokenSender) private tokenSender: ITokenSender,
+		@inject(TYPES.ILogger) private loggerService: ILoggerService,
 	) {}
 
 	async addRefreshTokenToWhitelist(user: UserModel): Promise<GenerateTokensReturn> {
@@ -120,28 +123,37 @@ export class AuthService implements IAuthService {
 
 		const hashedPassword = await hash(newPassword, +this.configService.get('SALT'));
 		await this.usersRepository.updatePassword(resetToken.userId, hashedPassword);
+		this.loggerService.warn(
+			'Password reset successful: ',
+			resetToken.userId,
+			resetToken.token,
+			newPassword,
+		);
 
 		// Optionally, delete the token after use
 		await this.resetTokenRepository.deleteByUserId(resetToken.userId, resetToken.token);
+		this.loggerService.warn('Token deleted after use: ', resetToken.userId, resetToken.token);
 	}
 	async changePassword(
 		userId: string,
 		currentPassword: string,
 		newPassword: string,
 	): Promise<void> {
-		const user = await this.usersRepository.findById(userId);
-		if (!user) {
+		const existedUser = await this.usersRepository.findById(userId);
+		if (!existedUser) {
 			throw new Error('[AuthService - changePassword()]User not found');
 		}
-
-		// Verify current password
-		const isPasswordValid = await compare(currentPassword, user.password);
-		if (!isPasswordValid) {
+		const newUser = new User(existedUser.email, existedUser.username, existedUser.password);
+		const isValid = await newUser.comparePassword(currentPassword);
+		if (!isValid) {
 			throw new Error('[AuthService - changePassword()] Invalid password');
 		}
+		newUser.setPassword(newPassword, +this.configService.get('SALT'));
+		// Verify current password
+		// const isPasswordValid = await compare(currentPassword, user.password);
 
 		// Hash the new password
-		const hashedPassword = await hash(newPassword, +this.configService.get('SALT'));
-		await this.usersRepository.updatePassword(userId, hashedPassword);
+		// const hashedPassword = await hash(newPassword, +this.configService.get('SALT'));
+		await this.usersRepository.updatePassword(userId, newUser.password);
 	}
 }

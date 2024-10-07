@@ -1,5 +1,5 @@
 import { Prisma, RefreshToken } from '@prisma/client';
-import { AddRefreshTokenInput } from './auth.repository';
+import { AddRefreshTokenInput } from '../../repository/auth.repository';
 
 export interface IAuthRepository {
 	addRefreshTokenToWhitelist({

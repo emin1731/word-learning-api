@@ -39,12 +39,17 @@ export class ResetTokenRepository implements IResetTokenRepository {
 			},
 		});
 	}
-	async deleteByUserId(userId: string, token: string): Promise<ResetToken> {
-		return await this.prismaService.client.resetToken.delete({
-			where: {
-				id: userId,
-				token: token, // Replace with the actual token value
-			},
-		});
+	async deleteByUserId(userId: string, token: string): Promise<ResetToken | null | false> {
+		try {
+			return await this.prismaService.client.resetToken.delete({
+				where: {
+					id: userId,
+					token: token, // Replace with the actual token value
+				},
+			});
+		} catch (e) {
+			console.log('User ID and token', userId, token);
+			return false;
+		}
 	}
 }
